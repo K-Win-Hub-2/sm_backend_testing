@@ -41,6 +41,7 @@ class FeesController extends Controller
     {
         $Fees_input = new Fees();
 
+        $Fees_input->class_types=$request->classtype;
         $Fees_input->fees_types=$request->feestype;
         $Fees_input->year_types=$request->yeartype;
         $Fees_input->to_year=$request->toyear;
@@ -86,8 +87,9 @@ class FeesController extends Controller
      */
     public function update(UpdateFeesRequest $request, Fees $fees)
     {
-       
+        
         $fees->fees_types=$request->feestype;
+        $fees->class_types=$request->classtype;
         $fees->year_types=$request->yeartype;
         $fees->to_year=$request->toyear;
         $fees->from_year=$request->fromyear;
@@ -124,7 +126,10 @@ class FeesController extends Controller
     {
 
         //    return $id;
+      
         $fees = Fees::find($id);
+
+        $fees->class_types=$request->classtype;
         $fees->fees_types=$request->feestype;
         $fees->year_types=$request->yeartype;
         $fees->to_year=$request->toyear;
