@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
+            $table->integer('class_types');
             $table->integer('yearlevel');
             $table->text('yearname');
             $table->text('intake');

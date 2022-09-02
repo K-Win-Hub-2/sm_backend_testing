@@ -55,7 +55,7 @@ class CourseController extends Controller
     {
         //
         $Course_input = new Course();
-
+        $Course_input->class_types=$request->classtype;
         $Course_input->yearlevel=$request->level;
         $Course_input->yearname=$request->name;
         $Course_input->intake=$request->intake;
@@ -98,6 +98,7 @@ class CourseController extends Controller
     {
       
         
+        $course->class_types=$request->classtype;
         $course->yearlevel=$request->level;
         $course->yearname=$request->name;
         $course->intake=$request->intake;

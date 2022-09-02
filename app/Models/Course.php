@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
     use HasFactory;
-    protected $fillable = ['yearlevel','yearname','intake','subject'];
+    protected $fillable = ['class_types','yearlevel','yearname','intake','subject'];
 
 }
