@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ContactusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('sendmail',[ContactusController::class,'tomailform']);
+Auth::routes();
+Route::get('mailform',[ContactusController::class,'mailform']);
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
