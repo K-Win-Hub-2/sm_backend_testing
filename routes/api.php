@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FeesController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\ContactusController;
 use App\Http\Controllers\CalendarControllerController;
 
 /*
@@ -41,3 +42,4 @@ Route::post('calendardelete/{id}',[CalendarControllerController::class,'deleteCa
 Route::post('calendarupdate/{id}',[CalendarControllerController::class,'updateCalendar']);
 
 
+Route::post('sendmail',[ContactusController::class,'sendMail']);
