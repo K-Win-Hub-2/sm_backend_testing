@@ -10,16 +10,17 @@ use Illuminate\Queue\SerializesModels;
 class SignUp extends Mailable
 {
     use Queueable, SerializesModels;
-
+public $name1;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($name)
     {
-        //
+        $this->name1 = $name;
     }
+    
 
     /**
      * Build the message.
@@ -28,6 +29,7 @@ class SignUp extends Mailable
      */
     public function build()
     {
-        return $this->view('contactusmail');
+        return $this->view('contactusmail')
+        ;
     }
 }

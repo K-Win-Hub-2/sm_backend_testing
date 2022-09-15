@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use view;
 use App\Mail\SignUp;
+use App\Mail\ThankYou;
 use App\Models\contactus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -19,7 +20,8 @@ class ContactusController extends Controller
      */
     public function index()
     {
-        //
+        $contact = contactus::all();
+        return response()->json($contact, 200);
     }
 
     /**
@@ -88,10 +90,7 @@ class ContactusController extends Controller
         //
     }
 
-    public function tomailform($mail)
-    {
-        return view('contactusmail',compact('mail'));
-    }
+
 
        public function sendMail(Request $request)
        {
@@ -108,9 +107,10 @@ class ContactusController extends Controller
         $contactus->save();
        
         $email= $request->Email;
+        $name=$request->Name;
       
-        tomailform($email);
-        Mail::to($email)->send(new SignUp());
+        Mail::to($email)->send(new ThankYou($name));
+       
         return response()->json($contactus, 200);
      
         // Mail::to($email)->send(new SignUp());
@@ -120,7 +120,15 @@ class ContactusController extends Controller
 
        public function mailform(Request $request)
        {
-        return view('contactusmail');
+        $name2= 'sithuhein26@gmail.com';
+     
+        return view('contactusmail',compact('name2'));
+       }
+
+       public function sendemail(Request $request)
+       {
+        Mail::to($request->email)->send(new ThankYou($email));
+        return response()->json('hello', 200);
        }
 
 }

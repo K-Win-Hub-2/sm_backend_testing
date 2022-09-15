@@ -21,4 +21,5 @@ Route::get('/', function () {
 Route::get('sendmail',[ContactusController::class,'tomailform']);
 Auth::routes();
 Route::get('mailform',[ContactusController::class,'mailform']);
+Route::post('sendemail',[ContactusController::class,'sendemail']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
