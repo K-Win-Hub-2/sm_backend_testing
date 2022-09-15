@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('studentname');
             $table->string('gender');
             $table->string('dateofbirth');
-            $table->string('course');
+            $table->text('course');
             $table->text('ans1');
             $table->text('ans2');
             $table->text('ans3');
@@ -38,8 +38,6 @@ return new class extends Migration
             $table->text('ans16');
             $table->text('ans17');
             $table->text('ans18');
-            $table->text('ans19');
-           
             $table->text('subname');
             $table->text('subemail');
           
