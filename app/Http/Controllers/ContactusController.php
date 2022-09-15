@@ -87,9 +87,16 @@ class ContactusController extends Controller
      */
     public function destroy(contactus $contactus)
     {
-        //
+   
+      
     }
 
+        public function deleteContactus($id)
+        {
+            $contactus = contactus::find($id);
+            $contactus->delete();
+            return response()->json($contactus, 200);
+        }
 
 
        public function sendMail(Request $request)
