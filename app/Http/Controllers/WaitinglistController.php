@@ -96,6 +96,14 @@ class WaitinglistController extends Controller
         //
     }
 
+    public function deleteWaitlist($id)
+    {
+        $waitinglist = waitinglist::find($id);
+        $waitinglist->delete();
+        return response()->json($waitinglist, 200);
+    }
+
+
     /**
      * Update the specified resource in storage.
      *

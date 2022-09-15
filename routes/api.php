@@ -27,7 +27,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::apiResource('contact_us', ContactusController::class);
-
+Route::post('deleteContactus/{id}',[ContactusController::class,'deleteContactus']);
 Route::apiResource('calendar1', CalendarControllerController::class);
 
 Route::apiResource('comment', CommentController::class);
@@ -39,9 +39,12 @@ Route::post('updateEvent/{id}',[EventlistController::class,'updateEvent']);
 
 
 
+
 Route::apiResource('fees', FeesController::class);
 
 Route::apiResource('waitinglist', WaitinglistController::class);
+
+Route::post('deleteWaitlist/{id}',[WaitinglistController::class,'deleteWaitlist']);
 
 Route::apiResource('courses', CourseController::class);
 // teacher
