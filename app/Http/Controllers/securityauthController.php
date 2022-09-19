@@ -32,7 +32,7 @@ class securityauthController extends Controller
   
         return response()->json([
        
-            'state' => 'deleted',
+            'state' => 'logout',
             
         ]);         
     }
