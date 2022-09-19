@@ -38,7 +38,7 @@ class EventlistController extends Controller
      */
     public function store(StoreeventlistRequest $request)
     {
-        date_default_timezone_set('Asia/Kolkata');
+        date_default_timezone_set('Asia/Yangon');
    
         $eventlist = new eventlist();
         $eventlist->name=$request->name;
