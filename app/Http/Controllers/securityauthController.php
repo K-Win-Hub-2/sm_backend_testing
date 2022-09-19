@@ -23,6 +23,19 @@ class securityauthController extends Controller
             
         ]);         
     }
+    public function logout(Request $request)
+    {
+        $userID=$request->userID;
+        $localtoken=$request->localtoken;
+        $deviceID=$request->deviceID;
+        $deleteanother= ActiveToken::where('tokendetail',$localtoken)->where('userdeviceid',$deviceID)->where('userid',$userID)->delete();
+  
+        return response()->json([
+       
+            'state' => 'deleted',
+            
+        ]);         
+    }
     
     public function alreadyLogin(Request $request)
     {
