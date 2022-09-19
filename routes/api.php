@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\securityauth;
 use App\Http\Controllers\FeesController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CommentController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\ContactusController;
 use App\Http\Controllers\EventlistController;
 use App\Http\Controllers\WaitinglistController;
+use App\Http\Controllers\securityauthController;
 use App\Http\Controllers\CalendarControllerController;
 
 /*
@@ -36,9 +38,14 @@ Route::apiResource('eventinput', EventlistController::class);
 Route::post('deleteEvent/{id}',[EventlistController::class,'deleteEvent']);
 Route::post('updateEvent/{id}',[EventlistController::class,'updateEvent']);
 
+Route::post('login/',[securityauthController::class,'login']);
+
+Route::post('alreadyLogin/',[securityauthController::class,'alreadyLogin']);
 
 
 
+
+Route::get('login', [securityauthController::class,'login']);
 
 Route::apiResource('fees', FeesController::class);
 
