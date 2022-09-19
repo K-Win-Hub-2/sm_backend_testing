@@ -10,6 +10,19 @@ use Illuminate\Http\Request;
 
 class securityauthController extends Controller
 {
+    public function logoutanother(Request $request)
+    {
+        $userID=$request->userID;
+        $localtoken=$request->localtoken;
+        $deviceID=$request->deviceID;
+        $deleteanother= ActiveToken::where('tokendetail','<>',$localtoken)->where('userdeviceid','<>',$deviceID)->where('userid',$userID)->delete();
+  
+        return response()->json([
+       
+            'state' => 'deleted',
+            
+        ]);         
+    }
     
     public function alreadyLogin(Request $request)
     {
@@ -43,6 +56,7 @@ class securityauthController extends Controller
 
     public function login(Request $request)
     {
+        $user_ID=$request->userID;
           $username=$request->username;
           $password=$request->password;
           $localtoken=$request->localtoken;
@@ -63,23 +77,39 @@ class securityauthController extends Controller
           else{
            
             // if localstorage is avaliable and deviceid is avaliable
-            $actoken = ActiveToken::where('tokendetail',$localtoken)->where('userdeviceid',$deviceID)->first();
+            $actoken = ActiveToken::where('tokendetail',$localtoken)->where('userdeviceid',$deviceID)->where('userid',$user_ID)->first();
+            $anotherDevice = ActiveToken::where('tokendetail','<>',$localtoken)->where('userdeviceid','<>',$deviceID)->where('userid',$user_ID)->first();;
   
 
 
             if($actoken)
             {
-
+                if($anotherDevice)
+                {
+                    $isanother='true';
+                }
+                else{
+                    $isanother='false';
+                }
                 return response()->json([
                     'userid' => $actoken->userid,
                     'Token' => $actoken->tokendetail,
                     'deviceID' => $actoken->userdeviceid,
-                    'state' => 'success',
+                    'anotherDevice'=>$isanother,
+                    'state' => 'alreadylogin',
                     
                 ]);
             }
             else
             {
+                if($anotherDevice)
+                {
+                    $isanother='true';
+                }
+                else{
+                    $isanother='false';
+                }
+                
                 $randtoken=Str::random(64);
                 date_default_timezone_set('Asia/Yangon');
                 $token=new ActiveToken();
@@ -93,6 +123,7 @@ class securityauthController extends Controller
                     'userid' => $user->id,
                     'Token' => $randtoken,
                     'deviceID' => $deviceID,
+                    'anotherDevice'=>$isanother,
                     'state' => 'success',
                     
                 ]);
