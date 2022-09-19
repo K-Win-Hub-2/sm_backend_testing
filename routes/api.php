@@ -41,6 +41,7 @@ Route::post('updateEvent/{id}',[EventlistController::class,'updateEvent']);
 Route::post('login/',[securityauthController::class,'login']);
 
 Route::post('alreadyLogin/',[securityauthController::class,'alreadyLogin']);
+Route::post('logoutanother/',[securityauthController::class,'logoutanother']);
 
 
 
