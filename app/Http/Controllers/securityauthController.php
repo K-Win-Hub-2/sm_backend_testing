@@ -91,12 +91,13 @@ class securityauthController extends Controller
            
             // if localstorage is avaliable and deviceid is avaliable
             $actoken = ActiveToken::where('tokendetail',$localtoken)->where('userdeviceid',$deviceID)->where('userid',$user_ID)->first();
-            $anotherDevice = ActiveToken::where('tokendetail','<>',$localtoken)->where('userdeviceid','<>',$deviceID)->where('userid',$user_ID)->first();;
-  
+          
 
 
             if($actoken)
             {
+                $anotherDevice = ActiveToken::where('tokendetail','<>',$localtoken)->where('userdeviceid','<>',$deviceID)->where('userid',$user_ID)->first();
+            
                 if($anotherDevice)
                 {
                     $isanother='true';
@@ -115,14 +116,7 @@ class securityauthController extends Controller
             }
             else
             {
-                if($anotherDevice)
-                {
-                    $isanother='true';
-                }
-                else{
-                    $isanother='false';
-                }
-                
+             
                 $randtoken=Str::random(64);
                 date_default_timezone_set('Asia/Yangon');
                 $token=new ActiveToken();
@@ -131,7 +125,17 @@ class securityauthController extends Controller
                 $token->createdtime=date('d-m-y h:i:s');
                 $token->userdeviceid=$deviceID;
                 $token->Save();
-               
+                
+                $anotherDevice = ActiveToken::where('tokendetail','<>',$randtoken)->where('userdeviceid','<>',$deviceID)->where('userid',$user->id)->first();
+                if($anotherDevice)
+                {
+                    $isanother='true';
+                }
+                else{
+                    $isanother='false';
+                }
+                
+
                 return response()->json([
                     'userid' => $user->id,
                     'Token' => $randtoken,
