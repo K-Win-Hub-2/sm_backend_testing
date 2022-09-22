@@ -44,7 +44,7 @@ class TeacherController extends Controller
         $teacher->studied=$request->studied;
         $teacher->position=$request->position;
         $teacher->biography=$request->biography;
-        $teacher->isDisplay='false';
+        $teacher->isDisplay='0';
         $teacher->about=$request->about;
         $teacher->teacherimage=$request->teacherimage;
 
