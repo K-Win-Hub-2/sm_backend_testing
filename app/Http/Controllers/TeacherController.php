@@ -114,5 +114,7 @@ class TeacherController extends Controller
     {
         $teacher = teacher::find($id);
         $teacher->isDisplay=$request->isDisplay;
+        $teacher->update();
+        return response()->json($teacher, 200);
     }
 }
