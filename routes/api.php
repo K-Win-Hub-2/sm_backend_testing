@@ -58,6 +58,8 @@ Route::post('deleteWaitlist/{id}',[WaitinglistController::class,'deleteWaitlist'
 Route::apiResource('courses', CourseController::class);
 // teacher
 Route::apiResource('teacher', TeacherController::class);
+Route::post('isDisplay/{id}',[TeacherController::class,'isDisplay']);
+
 //Fees Delete
 Route::post('fees-delete/{id}',[FeesController::class,'deleteFee']);
 Route::post('fees-update/{id}',[FeesController::class,'updateFee']);

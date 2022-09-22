@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\teacher;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreteacherRequest;
 use App\Http\Requests\UpdateteacherRequest;
-use App\Models\teacher;
 
 class TeacherController extends Controller
 {
@@ -43,6 +44,7 @@ class TeacherController extends Controller
         $teacher->studied=$request->studied;
         $teacher->position=$request->position;
         $teacher->biography=$request->biography;
+        $teacher->isDisplay=0;
         $teacher->about=$request->about;
         $teacher->teacherimage=$request->teacherimage;
 
@@ -106,5 +108,11 @@ class TeacherController extends Controller
     {
         $teacher->delete();
         return response()->json($teacher, 200);
+    }
+
+    public function isDisplay($id,Request $request)
+    {
+        $teacher = teacher::find($id);
+        $teacher->isDisplay=$request->isDisplay;
     }
 }

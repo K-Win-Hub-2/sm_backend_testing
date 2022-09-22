@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('position');
             $table->text('biography');
             $table->text('about');
+            $table->string('isDisplay');
             $table->LongText('teacherimage');
 
             $table->timestamps();
