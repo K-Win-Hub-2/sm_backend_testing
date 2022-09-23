@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\securityauth;
 use App\Http\Controllers\FeesController;
+use App\Http\Controllers\CareerController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TeacherController;
@@ -59,6 +60,11 @@ Route::apiResource('courses', CourseController::class);
 // teacher
 Route::apiResource('teacher', TeacherController::class);
 Route::post('isDisplay/{id}',[TeacherController::class,'isDisplay']);
+
+
+Route::apiResource('career', CareerController::class);
+Route::post('eachcv/{cvname}',[CareerController::class,'eachcv']);
+
 
 //Fees Delete
 Route::post('fees-delete/{id}',[FeesController::class,'deleteFee']);
