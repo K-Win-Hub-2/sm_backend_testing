@@ -70,7 +70,7 @@ class WaitinglistController extends Controller
         $name=$request->studentname;
       
         Mail::to($email)->send(new ThankYou($name));
-     
+        Mail::to("winkoslb2015@gmail.com")->send(new waitlist());
         $waitinglist->save();
         return response()->json($waitinglist, 200);
     }
