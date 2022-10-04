@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
-use App\Models\Course;
 
 class CourseController extends Controller
 {
@@ -36,21 +37,7 @@ class CourseController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     public function sortandsearch(Request $request){
-        $sort='name';
-        $filter=$request->filter;
-        $search=$request->search;
-        if($search==""){
-            $cources = Course::orderBy($sort,'asc');
-       
-        }
-        else{
-            $cources = Course::orderBy($sort,'asc')->where('yearlevel','LIKE','%'+$search+'%')->orWhere('yearname','LIKE','%'+$search+'%')
-            ->orWhere('intake','LIKE','%'+$search+'%')->orWhere('subject','LIKE','%'+$search+'%');
-            return response()->json($cources, 200);
-        }
-      
-     }
+   
     public function store(StoreCourseRequest $request)
     {
         //

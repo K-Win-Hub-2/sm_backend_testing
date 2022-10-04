@@ -19,7 +19,20 @@ class CalendarControllerController extends Controller
         $calendar_input = CalendarController::all();
         return response()->json($calendar_input, 200);
     }
-
+    public function search(Request $request){
+   
+        $search=$request->search;
+        if($search==""){
+       
+       
+        }
+        else{
+            $data = CalendarController::where('calendar_name','LIKE','%'+$search+'%')->orWhere('description','LIKE','%'+$search+'%')
+            ->orWhere('type','LIKE','%'+$search+'%');
+            return response()->json($data, 200);
+        }
+      
+     }
     /**
      * Show the form for creating a new resource.
      *

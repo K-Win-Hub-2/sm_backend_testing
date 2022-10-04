@@ -30,6 +30,20 @@ class EventlistController extends Controller
         //
     }
 
+    public function search(Request $request){
+   
+        $search=$request->search;
+        if($search==""){
+       
+       
+        }
+        else{
+            $data = eventlist::where('name','LIKE','%'+$search+'%');
+            return response()->json($data, 200);
+        }
+      
+     }
+
     /**
      * Store a newly created resource in storage.
      *
