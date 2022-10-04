@@ -70,11 +70,11 @@ Route::post('eachcv/{cvname}',[CareerController::class,'eachcv']);
 Route::post('fees-delete/{id}',[FeesController::class,'deleteFee']);
 Route::post('fees-update/{id}',[FeesController::class,'updateFee']);
 
-Route::post('search',[CalendarControllerController::class,'search']);
+Route::post('searchcalendar',[CalendarControllerController::class,'search']);
 
-Route::post('search',[TeacherController::class,'search']);
+Route::post('searchteacher',[TeacherController::class,'search']);
 
-Route::post('search',[EventlistController::class,'search']);
+Route::post('searchevent',[EventlistController::class,'search']);
 
 
 Route::post('calendardelete/{id}',[CalendarControllerController::class,'deleteCalendar']);
