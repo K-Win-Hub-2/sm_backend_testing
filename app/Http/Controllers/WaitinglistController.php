@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\ThankYou;
+use App\Mail\waitlist;
 use App\Models\waitinglist;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StorewaitinglistRequest;
