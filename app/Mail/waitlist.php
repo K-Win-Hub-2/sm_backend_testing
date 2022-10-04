@@ -28,6 +28,6 @@ class waitlist extends Mailable
      */
     public function build()
     {
-        return $this->view('shwemawkun')->subject('You have one new register ');
+        return $this->view('shwemawkun2')->subject('You have one new register ');
     }
 }
