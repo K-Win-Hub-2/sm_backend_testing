@@ -38,7 +38,7 @@ class EventlistController extends Controller
        
         }
         else{
-            $data = eventlist::where('name','LIKE','%'+$search+'%')->get();
+            $data = eventlist::where('name','LIKE','%'.$search.'%')->get();
             return response()->json($data, 200);
         }
       

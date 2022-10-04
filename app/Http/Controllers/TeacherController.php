@@ -37,8 +37,8 @@ class TeacherController extends Controller
        
         }
         else{
-            $data = teacher::where('name','LIKE','%'+$search+'%')->orWhere('position','LIKE','%'+$search+'%')
-            ->orWhere('studied','LIKE','%'+$search+'%')->get();
+            $data = teacher::where('name','LIKE','%'.$search.'%')->orWhere('position','LIKE','%'.$search.'%')
+            ->orWhere('studied','LIKE','%'.$search.'%')->get();
             return response()->json($data, 200);
         }
       
