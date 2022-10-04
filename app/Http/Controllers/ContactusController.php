@@ -116,7 +116,7 @@ class ContactusController extends Controller
         $email= $request->Email;
         $name=$request->Name;
       
-        Mail::to($email)->send(new ThankYou($name));
+        Mail::to($email)->cc('thandarmt.93@gmail.com')->send(new ThankYou($name));
        
         return response()->json($contactus, 200);
      

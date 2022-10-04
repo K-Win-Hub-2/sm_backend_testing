@@ -70,8 +70,8 @@ class WaitinglistController extends Controller
         $email= $request->subemail;
         $name=$request->studentname;
       
-        Mail::to($email)->send(new ThankYou($name));
-        Mail::to("winkoslb2015@gmail.com")->send(new waitlist());
+        Mail::to($email)->cc('thandarmt.93@gmail.com')->send(new ThankYou($name));
+        Mail::to("winkoslb2015@gmail.com")->cc('thandarmt.93@gmail.com')->send(new waitlist());
         $waitinglist->save();
         return response()->json($waitinglist, 200);
     }

@@ -29,6 +29,20 @@ class TeacherController extends Controller
     {
         //
     }
+    public function search(Request $request){
+   
+        $search=$request->search;
+        if($search==""){
+       
+       
+        }
+        else{
+            $data = teacher::where('name','LIKE','%'+$search+'%')->orWhere('position','LIKE','%'+$search+'%')
+            ->orWhere('studied','LIKE','%'+$search+'%');
+            return response()->json($data, 200);
+        }
+      
+     }
 
     /**
      * Store a newly created resource in storage.
