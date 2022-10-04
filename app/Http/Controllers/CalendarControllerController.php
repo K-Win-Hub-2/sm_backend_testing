@@ -27,8 +27,8 @@ class CalendarControllerController extends Controller
        
         }
         else{
-            $data = CalendarController::where('calendar_name','LIKE','%'+$search+'%')->orWhere('description','LIKE','%'+$search+'%')
-            ->orWhere('type','LIKE','%'+$search+'%')->get();
+            $data = CalendarController::where('calendar_name','LIKE','%'.$search.'%')->orWhere('description','LIKE','%'.$search.'%')
+            ->orWhere('type','LIKE','%'.$search.'%')->get();
             return response()->json($data, 200);
         }
       
