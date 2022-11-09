@@ -46,7 +46,10 @@ class CourseController extends Controller
         $Course_input->yearlevel=$request->level;
         $Course_input->yearname=$request->name;
         $Course_input->intake=$request->intake;
-        $Course_input->subject=$request->subject;
+        $Course_input->curriculum=$request->curriculum;
+        $Course_input->digital=$request->digital;
+        $Course_input->extracu=$request->extracu;
+        $Course_input->foreign=$request->foreign;
      
         $Course_input->save();
         return response()->json($Course_input, 200);
@@ -89,7 +92,12 @@ class CourseController extends Controller
         $course->yearlevel=$request->level;
         $course->yearname=$request->name;
         $course->intake=$request->intake;
-        $course->subject=$request->subject;
+
+        $course->curriculum=$request->curriculum;
+        $course->digital=$request->digital;
+        $course->extracu=$request->extracu;
+        $course->foreign=$request->foreign;
+        
         $course->update();
         return response()->json($course, 200);
     }

@@ -19,7 +19,10 @@ return new class extends Migration
             $table->integer('yearlevel');
             $table->text('yearname');
             $table->text('intake');
-            $table->text('subject');
+            $table->text('curriculum');
+            $table->text('digital');
+            $table->text('extracu');
+            $table->text('foreign');
 
 
 
