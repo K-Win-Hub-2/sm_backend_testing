@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('position');
             $table->string('phone');
             $table->string('email');
+            $table->string('estatus');
             $table->text('about');
             $table->timestamps();
         });
