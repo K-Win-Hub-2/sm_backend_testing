@@ -9,6 +9,7 @@ use App\Http\Controllers\CareerController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ContactusController;
 use App\Http\Controllers\EventlistController;
 use App\Http\Controllers\WaitinglistController;
@@ -89,9 +90,9 @@ Route::post('like/{id}',[EventlistController::class,'like']);
 
 // position
 
-Route::post('storeposition',[EventlistController::class,'storeposition']);
-Route::post('updateposition/{id}',[EventlistController::class,'updateposition']);
-Route::post('deleteposition/{id}',[EventlistController::class,'DeletePosition']);
-Route::post('showposition',[EventlistController::class,'showposition']);
+Route::post('storeposition',[PositionController::class,'storeposition']);
+Route::post('updateposition/{id}',[PositionController::class,'updateposition']);
+Route::post('deleteposition/{id}',[PositionController::class,'DeletePosition']);
+Route::post('showposition',[PositionController::class,'showposition']);
 
    
