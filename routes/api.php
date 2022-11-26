@@ -86,3 +86,12 @@ Route::post('calendarupdate/{id}',[CalendarControllerController::class,'updateCa
 Route::post('sendmail',[ContactusController::class,'sendMail']);
 
 Route::post('like/{id}',[EventlistController::class,'like']);
+
+// position
+
+Route::post('storeposition',[EventlistController::class,'storeposition']);
+Route::post('updateposition/{id}',[EventlistController::class,'updateposition']);
+Route::post('deleteposition/{id}',[EventlistController::class,'DeletePosition']);
+Route::post('showposition',[EventlistController::class,'showposition']);
+
+   
