@@ -39,11 +39,11 @@ class CommentController extends Controller
     {
         //
         $comment = new comment();
-        date_default_timezone_set('Asia/Kolkata');
-        
+        date_default_timezone_set('Asia/Yangon');
+        $comment->time=date('d-m-y h:i:s');
         $comment->eventID=$request->eventID;
         $comment->commentcontent=$request->commentcontent;
-        $comment->time=date('d-m-y h:i:s');
+       
   
       
      
