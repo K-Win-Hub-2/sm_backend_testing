@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Career extends Model
 {
     use HasFactory;
-    protected $fillable = ['filename','name','studied','position','phone','email','about'];
+    protected $fillable = ['filename','name','studied','position','phone','email','about','estatus'];
 
 }

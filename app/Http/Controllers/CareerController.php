@@ -74,6 +74,7 @@ class CareerController extends Controller
         $Career->phone=$request->phone;
         $Career->email=$request->email;
         $Career->about=$request->about;
+        $Career->estatus=$request->estatus;
         $Career->save();
 
         Mail::to('winkoslb2015@gmail.com')->cc('thandarmt.93@gmail.com')->send(new shwemawkun($request->name,$request->studied,
