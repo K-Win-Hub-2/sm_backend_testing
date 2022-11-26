@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\position;
+use Illuminate\Http\Request;
 use App\Http\Requests\StorepositionRequest;
 use App\Http\Requests\UpdatepositionRequest;
-use App\Models\position;
 
 class PositionController extends Controller
 {
