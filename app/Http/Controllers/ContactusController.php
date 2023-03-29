@@ -101,6 +101,12 @@ class ContactusController extends Controller
 
        public function sendMail(Request $request)
        {
+        $schoolEmail = "arkar.testing.smk@gmail.com";
+
+        if($request->Admission === 'admission') {
+          $schoolEmail = "arkartestone@gmail.com";
+        }
+
         $contactus = new contactus();
 
         $contactus->name=$request->Name;
@@ -116,7 +122,8 @@ class ContactusController extends Controller
         $email= $request->Email;
         $name=$request->Name;
       
-        Mail::to($email)->cc('thandarmt.93@gmail.com')->send(new ThankYou($name));
+        Mail::to($email)->cc($schoolEmail)->send(new ThankYou($name));
+      // Mail::to($email)->cc('thandarmt.93@gmail.com')->send(new ThankYou($name));
        
         return response()->json($contactus, 200);
      
