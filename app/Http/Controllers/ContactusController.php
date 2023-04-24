@@ -101,10 +101,10 @@ class ContactusController extends Controller
 
        public function sendMail(Request $request)
        {
-        $schoolEmail = "arkar.testing.smk@gmail.com";
+        $schoolEmail = "academic@smkeducationgroup.com";
 
         if($request->Admission === 'admission') {
-          $schoolEmail = "arkartestone@gmail.com";
+          $schoolEmail = "shwemawkunschool@gmail.com";
         }
 
         $contactus = new contactus();
