@@ -95,4 +95,3 @@ Route::post('updateposition/{id}',[PositionController::class,'updateposition']);
 Route::post('deleteposition/{id}',[PositionController::class,'DeletePosition']);
 Route::post('showposition',[PositionController::class,'showposition']);
 
-   

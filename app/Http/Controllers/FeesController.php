@@ -29,7 +29,7 @@ class FeesController extends Controller
      */
     public function create()
     {
-        
+
     }
     /**
      * Store a newly created resource in storage.
@@ -41,6 +41,7 @@ class FeesController extends Controller
     {
         $Fees_input = new Fees();
 
+        $Fees_input->fees_name=$request->classname;
         $Fees_input->class_types=$request->classtype;
         $Fees_input->fees_types=$request->feestype;
         $Fees_input->year_types=$request->yeartype;
@@ -49,8 +50,8 @@ class FeesController extends Controller
         $Fees_input->extra_types=$request->extratypes;
         $Fees_input->charges=$request->charges;
         $Fees_input->remark=$request->remark;
-    
-     
+
+
         $Fees_input->save();
         return response()->json($Fees_input, 200);
     }
@@ -64,7 +65,7 @@ class FeesController extends Controller
     public function show(Fees $fees)
     {
         //
-        
+
     }
 
     /**
@@ -87,7 +88,7 @@ class FeesController extends Controller
      */
     public function update(UpdateFeesRequest $request, Fees $fees)
     {
-        
+
         $fees->fees_types=$request->feestype;
         $fees->class_types=$request->classtype;
         $fees->year_types=$request->yeartype;
@@ -108,7 +109,7 @@ class FeesController extends Controller
      */
     public function destroy(Fees $fees)
     {
-       
+
         $fees->delete();
         return response()->json($fees, 200);
     }
@@ -126,7 +127,7 @@ class FeesController extends Controller
     {
 
         //    return $id;
-      
+
         $fees = Fees::find($id);
 
         $fees->class_types=$request->classtype;
