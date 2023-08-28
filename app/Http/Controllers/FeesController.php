@@ -40,16 +40,12 @@ class FeesController extends Controller
     public function store(StoreFeesRequest $request)
     {
         $Fees_input = new Fees();
-
-        $Fees_input->fees_name=$request->classname;
-        $Fees_input->class_types=$request->classtype;
-        $Fees_input->fees_types=$request->feestype;
-        $Fees_input->year_types=$request->yeartype;
         $Fees_input->to_year=$request->toyear;
         $Fees_input->from_year=$request->fromyear;
-        $Fees_input->extra_types=$request->extratypes;
+        $Fees_input->class_types=$request->classtype;
+        $Fees_input->fees_types=$request->feestype;
         $Fees_input->charges=$request->charges;
-        $Fees_input->remark=$request->remark;
+
 
 
         $Fees_input->save();
@@ -89,14 +85,10 @@ class FeesController extends Controller
     public function update(UpdateFeesRequest $request, Fees $fees)
     {
 
+        $Fees_input->fees_name=$request->classname;
         $fees->fees_types=$request->feestype;
         $fees->class_types=$request->classtype;
-        $fees->year_types=$request->yeartype;
-        $fees->to_year=$request->toyear;
-        $fees->from_year=$request->fromyear;
-        $fees->extra_types=$request->extratypes;
         $fees->charges=$request->charges;
-        $fees->remark=$request->remark;
         $fees->update();
         return response()->json($fees, 200);
     }
@@ -129,15 +121,11 @@ class FeesController extends Controller
         //    return $id;
 
         $fees = Fees::find($id);
-
-        $fees->class_types=$request->classtype;
-        $fees->fees_types=$request->feestype;
-        $fees->year_types=$request->yeartype;
         $fees->to_year=$request->toyear;
         $fees->from_year=$request->fromyear;
-        $fees->extra_types=$request->extratypes;
+        $fees->class_types=$request->classtype;
+        $fees->fees_types=$request->feestype;
         $fees->charges=$request->charges;
-        $fees->remark=$request->remark;
         $fees->update();
         return response()->json($fees, 200);
     }

@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\securityauth;
 use App\Http\Controllers\FeesController;
+use App\Http\Controllers\YearController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CommentController;
@@ -70,6 +71,12 @@ Route::post('eachcv/{cvname}',[CareerController::class,'eachcv']);
 //Fees Delete
 Route::post('fees-delete/{id}',[FeesController::class,'deleteFee']);
 Route::post('fees-update/{id}',[FeesController::class,'updateFee']);
+
+
+
+// Route::get('year-create',[YearController::class,'create']);
+Route::get('year',[YearController::class,'getYear']);
+Route::post('year-update',[YearController::class,'update']);
 
 Route::post('searchcalendar',[CalendarControllerController::class,'search']);
 
