@@ -74,7 +74,7 @@ Route::post('fees-update/{id}',[FeesController::class,'updateFee']);
 
 
 
-// Route::get('year-create',[YearController::class,'create']);
+Route::get('year-create',[YearController::class,'create']);
 Route::get('year',[YearController::class,'getYear']);
 Route::post('year-update',[YearController::class,'update']);
 
