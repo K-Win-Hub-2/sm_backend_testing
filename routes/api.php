@@ -73,7 +73,7 @@ Route::post('fees-delete/{id}',[FeesController::class,'deleteFee']);
 Route::post('fees-update/{id}',[FeesController::class,'updateFee']);
 
 
-
+// for create only
 Route::get('year-create',[YearController::class,'create']);
 Route::get('year',[YearController::class,'getYear']);
 Route::post('year-update',[YearController::class,'update']);
