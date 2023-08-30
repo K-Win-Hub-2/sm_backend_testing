@@ -31,17 +31,17 @@ class EventlistController extends Controller
     }
 
     public function search(Request $request){
-   
+
         $search=$request->search;
         if($search==""){
-       
-       
+
+
         }
         else{
             $data = eventlist::where('name','LIKE','%'.$search.'%')->get();
             return response()->json($data, 200);
         }
-      
+
      }
 
     /**
@@ -53,7 +53,7 @@ class EventlistController extends Controller
     public function store(StoreeventlistRequest $request)
     {
         date_default_timezone_set('Asia/Yangon');
-   
+
         $eventlist = new eventlist();
         $eventlist->name=$request->name;
         $eventlist->content=$request->content;
@@ -62,8 +62,13 @@ class EventlistController extends Controller
         $eventlist->reactcount=0;
         $eventlist->time=date('d-m-y h:i:s');
 
-    
-  
+        $allList = eventList::all();
+        $firstListID = eventList::first()->id;
+        if($allList->count() > 7) {
+            $this->deleteEvent($firstListID);
+        }
+
+
 
 
         $eventlist->save();
@@ -101,7 +106,7 @@ class EventlistController extends Controller
      */
     public function update(UpdateeventlistRequest $request, eventlist $eventlist)
     {
- 
+
         $eventlist->name=$request->name;
         $eventlist->content=$request->content;
         $eventlist->eventimg=$request->eventimg;
@@ -125,15 +130,25 @@ class EventlistController extends Controller
     {
 
         //    return $id;
-      
+
         $like = eventlist::find($id);
 
         $like->likecount+=1;
-     
+
         $like->update();
         return response()->json($like, 200);
     }
-
+    // public function test() {
+    //     $allList = eventList::all();
+    //     if($allList->count() > 8) {
+    //         return $allList;
+    //     }
+    //     return $allList->count();
+    // }
+    // public function test1() {
+    //     $test = $this->test();
+    //     return response()->json($test);
+    // }
     public function deleteEvent($id)
     {
 
@@ -147,13 +162,13 @@ class EventlistController extends Controller
     {
 
         //    return $id;
-      
+
         $eventlist = eventlist::find($id);
 
         $eventlist->name=$request->name;
         $eventlist->content=$request->content;
         $eventlist->eventimg=$request->eventimg;
-  
+
         $eventlist->update();
         return response()->json($eventlist, 200);
     }

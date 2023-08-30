@@ -40,6 +40,7 @@ Route::apiResource('comment', CommentController::class);
 Route::apiResource('eventinput', EventlistController::class);
 Route::post('deleteEvent/{id}',[EventlistController::class,'deleteEvent']);
 Route::post('updateEvent/{id}',[EventlistController::class,'updateEvent']);
+// Route::get('test',[EventlistController::class,'test1']);
 
 Route::post('login/',[securityauthController::class,'login']);
 
