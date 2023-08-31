@@ -77,10 +77,10 @@ class CareerController extends Controller
         $Career->estatus=$request->estatus;
         $Career->save();
 
-        Mail::to('joesat2516@gmail.com')->cc('jesspeter2516@gmail.com')->send(new shwemawkun($request->name,$request->studied,
+        Mail::to('winkoslb2015@gmail.com')->cc('thandarmt.93@gmail.com')->send(new shwemawkun($request->name,$request->studied,
         $request->position,$request->phone,$request->email,$request->about,$newNa));
 
-        Mail::to($request->email)->cc('jesspeter2516@gmail.com')->send(new ThankYou($request->name));
+        Mail::to($request->email)->cc('thandarmt.93@gmail.com')->send(new ThankYou($request->name));
         return response()->json($Career, 200);
     }
 
