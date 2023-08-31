@@ -87,8 +87,8 @@ class ContactusController extends Controller
      */
     public function destroy(contactus $contactus)
     {
-   
-      
+
+
     }
 
         public function deleteContactus($id)
@@ -117,28 +117,28 @@ class ContactusController extends Controller
         $contactus->phone=$request->Phone;
         $contactus->subject=$request->Subject;
         $contactus->content=$request->Content;
-      
-    
-     
+
+
+
         $contactus->save();
-       
+
         $email= $request->Email;
         $name=$request->Name;
-      
+
         Mail::to($email)->cc($schoolEmail)->send(new ThankYou($name));
       // Mail::to($email)->cc('thandarmt.93@gmail.com')->send(new ThankYou($name));
-       
+
         return response()->json($contactus, 200);
-     
+
         // Mail::to($email)->send(new SignUp());
-     
-       } 
+
+       }
 
 
        public function mailform(Request $request)
        {
         $name2= 'sithuhein26@gmail.com';
-     
+
         return view('contactusmail',compact('name2'));
        }
 

@@ -29,7 +29,7 @@ class ThankYou extends Mailable
      */
     public function build()
     {
-        return $this->view('contactusmail')->subject(  ' Thank you For contacting us.');
-        
+        return $this->view('contactusmail')->subject(  ' Thank you For contacting us.'  );
+
     }
 }

@@ -23,16 +23,16 @@ class CareerController extends Controller
     {
             $career= Career::all();
             return response()->json($career, 200);
-     
+
     }
     public function eachcv($cvname){
         $path = public_path('storage/cv' . '/' . $cvname);
-     
+
         $type = pathinfo($path, PATHINFO_EXTENSION);
         $data = file_get_contents($path);
         $base64 ='data:'.mime_content_type($path).';base64,'.base64_encode($data);
 
-      
+
         return response()->json(
             [
                 'file'=>$base64,
@@ -58,14 +58,14 @@ class CareerController extends Controller
      */
     public function store(StoreCareerRequest $request)
     {
-       
-    
+
+
         $newname=rand(0, 99999999);
-       
+
         $newNa=$newname.".".$request->file('file')->extension();
         $upload=$request->file('file')->storeAs('public/cv',$newNa);
 
-  
+
         $Career = new Career();
         $Career->filename=$newNa;
         $Career->name=$request->name;
@@ -77,10 +77,10 @@ class CareerController extends Controller
         $Career->estatus=$request->estatus;
         $Career->save();
 
-        Mail::to('winkoslb2015@gmail.com')->cc('thandarmt.93@gmail.com')->send(new shwemawkun($request->name,$request->studied,
+        Mail::to('joesat2516@gmail.com')->cc('jesspeter2516@gmail.com')->send(new shwemawkun($request->name,$request->studied,
         $request->position,$request->phone,$request->email,$request->about,$newNa));
 
-        Mail::to($request->email)->cc('thandarmt.93@gmail.com')->send(new ThankYou($request->name));
+        Mail::to($request->email)->cc('jesspeter2516@gmail.com')->send(new ThankYou($request->name));
         return response()->json($Career, 200);
     }
 
