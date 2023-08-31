@@ -22,7 +22,7 @@ class CourseController extends Controller
     ->when(request()->has('level'), function ($query) {
       return $query->where('year_level', request()->level);
     })
-    ->orderBy('order')->get();
+    ->orderBy('list_order')->get();
 
     return response()->json($courses, 200);
   }
@@ -53,7 +53,7 @@ class CourseController extends Controller
     $course->class_type = $request->class_type;
     $course->year_level = $request->year_level;
     $course->intake = $request->intake;
-    $course->order = $request->order;
+    $course->list_order = $request->order;
     $course->fromMonth = $request->fromMonth;
     $course->toMonth = $request->toMonth;
     $course->curriculum = $request->curriculum;
@@ -97,7 +97,7 @@ class CourseController extends Controller
     $course->class_type = $request->class_type;
     $course->year_level = $request->year_level;
     $course->intake = $request->intake;
-    $course->order = $request->order;
+    $course->list_order = $request->order;
     $course->fromMonth = $request->fromMonth;
     $course->toMonth = $request->toMonth;
     $course->curriculum = $request->curriculum;
