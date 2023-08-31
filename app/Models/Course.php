@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Course extends Model
 {
     use HasFactory;
-    protected $fillable = ['class_type','year_level','intake','from','to','curriculum'];
+    protected $fillable = ['class_type','year_level','intake','fromMonth','toMonth','order','curriculum'];
 }

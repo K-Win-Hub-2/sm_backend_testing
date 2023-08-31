@@ -17,9 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('class_type');
             $table->string('year_level');
+            $table->integer('order');
             $table->text('intake');
-            $table->string('from');
-            $table->string('to');
+            $table->string('fromMonth');
+            $table->string('toMonth');
             $table->json('curriculum');
             $table->timestamps();
         });
