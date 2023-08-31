@@ -15,17 +15,12 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
-            $table->integer('class_types');
-            $table->integer('yearlevel');
-            $table->text('yearname');
+            $table->string('class_type');
+            $table->string('year_level');
             $table->text('intake');
-            $table->text('curriculum');
-            $table->text('digital');
-            $table->text('extracu');
-            $table->text('foreign');
-
-
-
+            $table->string('from');
+            $table->string('to');
+            $table->json('curriculum');
             $table->timestamps();
         });
     }

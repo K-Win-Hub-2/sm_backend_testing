@@ -9,110 +9,111 @@ use App\Http\Requests\UpdateCourseRequest;
 
 class CourseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $Course_input = Course::all();
-        return response()->json($Course_input, 200);
-    }
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function index()
+  {
+    $courses = Course::when(request()->has('type'), function ($query) {
+      return $query->where('class_type', request()->type);
+    })
+    ->when(request()->has('level'), function ($query) {
+      return $query->where('year_level', request()->level);
+    })
+    ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    return response()->json($courses, 200);
+  }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCourseRequest  $request
-     * @return \Illuminate\Http\Response
-     */
+  /**
+   * Show the form for creating a new resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function create()
+  {
+    //
+  }
 
-   
-    public function store(StoreCourseRequest $request)
-    {
-        //
-        $Course_input = new Course();
-        $Course_input->class_types=$request->classtype;
-        $Course_input->yearlevel=$request->level;
-        $Course_input->yearname=$request->name;
-        $Course_input->intake=$request->intake;
-        $Course_input->curriculum=$request->curriculum;
-        $Course_input->digital=$request->digital;
-        $Course_input->extracu=$request->extracu;
-        $Course_input->foreign=$request->foreign;
-     
-        $Course_input->save();
-        return response()->json($Course_input, 200);
-    }
- 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Course  $course
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Course $course)
-    {
-        //
-    }
+  /**
+   * Store a newly created resource in storage.
+   *
+   * @param  \App\Http\Requests\StoreCourseRequest  $request
+   * @return \Illuminate\Http\Response
+   */
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Course  $course
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Course $course)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCourseRequest  $request
-     * @param  \App\Models\Course  $course
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateCourseRequest $request, Course $course)
-    {
-      
-        
-        $course->class_types=$request->classtype;
-        $course->yearlevel=$request->level;
-        $course->yearname=$request->name;
-        $course->intake=$request->intake;
+  public function store(StoreCourseRequest $request)
+  {
+    // return response()->json($request, 200);
+    //
+    $course = new Course();
+    $course->class_type = $request->class_type;
+    $course->year_level = $request->year_level;
+    $course->intake = $request->intake;
+    $course->from = $request->from;
+    $course->to = $request->to;
+    $course->curriculum = $request->curriculum;
 
-        $course->curriculum=$request->curriculum;
-        $course->digital=$request->digital;
-        $course->extracu=$request->extracu;
-        $course->foreign=$request->foreign;
-        
-        $course->update();
-        return response()->json($course, 200);
-    }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Course  $course
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Course $course)
-    {
-        //
-        // return $course;
-        $course->delete();
-        return response()->json($course, 200);
-    }
-    
+    $course->save();
+    return response()->json($course, 200);
+  }
+
+  /**
+   * Display the specified resource.
+   *
+   * @param  \App\Models\Course  $course
+   * @return \Illuminate\Http\Response
+   */
+  public function show(Course $course)
+  {
+    //
+  }
+
+  /**
+   * Show the form for editing the specified resource.
+   *
+   * @param  \App\Models\Course  $course
+   * @return \Illuminate\Http\Response
+   */
+  public function edit(Course $course)
+  {
+    //
+  }
+
+  /**
+   * Update the specified resource in storage.
+   *
+   * @param  \App\Http\Requests\UpdateCourseRequest  $request
+   * @param  \App\Models\Course  $course
+   * @return \Illuminate\Http\Response
+   */
+  public function update(UpdateCourseRequest $request, Course $course)
+  {
+    // return response($request);
+    $course->class_type = $request->class_type;
+    $course->year_level = $request->year_level;
+    $course->intake = $request->intake;
+    $course->from = $request->from;
+    $course->to = $request->to;
+    $course->curriculum = $request->curriculum;
+
+    $course->update();
+    return response()->json($course, 200);
+  }
+  /**
+   * Remove the specified resource from storage.
+   *
+   * @param  \App\Models\Course  $course
+   * @return \Illuminate\Http\Response
+   */
+  public function destroy(Course $course)
+  {
+    //
+    // return $course;
+    $course->delete();
+    return response()->json($course, 200);
+  }
 }
