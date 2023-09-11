@@ -10,7 +10,7 @@
 -moz-box-shadow: 0px 0px 11px 0px rgba(0,0,0,1); margin-bottom:20px;">
         <h3 class="" style="font-size:30px;"> Dear <b
                 style="font-size:30px;    color:darkblue ;
-    text-shadow: 0px 0px 4px #F3cd5d;">Sale Department</b>
+    text-shadow: 0px 0px 4px #F3cd5d;">Info Department</b>
         </h3>
         <h4 style=" font-size:20px; ;"> <b style="color:red;">Shwe Maw Kun</b> You have one new applicant.</h4>
         <img src="{{ asset('img/cover.jpg') }}" class="" style="width:30vw; magin-top:10px; margin-left:20vw;"
