@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('fees', function (Blueprint $table) {
             $table->id();
             $table->string('fees_name');
+            $table->string('from_year');
+            $table->string('to_year');
             $table->integer('fees_types');
             $table->integer('class_types');
             $table->Biginteger('charges');
