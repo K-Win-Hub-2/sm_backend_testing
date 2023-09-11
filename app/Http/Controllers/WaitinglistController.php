@@ -40,6 +40,8 @@ class WaitinglistController extends Controller
      */
     public function store(StorewaitinglistRequest $request)
     {
+      $schoolEmail = 'arkar.testing.smk@gmail.com';
+
            $waitinglist = new waitinglist();
         $waitinglist->formdate=$request->formdate;
         $waitinglist->studentname=$request->studentname;
@@ -70,8 +72,8 @@ class WaitinglistController extends Controller
         $email= $request->subemail;
         $name=$request->studentname;
       
-        Mail::to($email)->cc('thandarmt.93@gmail.com')->send(new ThankYou($name));
-        Mail::to("winkoslb2015@gmail.com")->cc('thandarmt.93@gmail.com')->send(new waitlist());
+        Mail::to($email)->cc($schoolEmail)->send(new ThankYou($name));
+        Mail::to($email)->cc($schoolEmail)->send(new waitlist());
         $waitinglist->save();
         return response()->json($waitinglist, 200);
     }
