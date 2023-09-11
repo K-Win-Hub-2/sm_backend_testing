@@ -40,7 +40,7 @@ class WaitinglistController extends Controller
      */
     public function store(StorewaitinglistRequest $request)
     {
-      $schoolEmail = 'arkar.testing.smk@gmail.com';
+      $schoolEmail = 'secondaryschool.smk@gmail.com';
 
            $waitinglist = new waitinglist();
         $waitinglist->formdate=$request->formdate ?? 'Not set!';
