@@ -10,6 +10,7 @@ use App\Http\Controllers\CareerController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TeacherCategoryController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ContactusController;
 use App\Http\Controllers\EventlistController;
@@ -64,6 +65,7 @@ Route::apiResource('courses', CourseController::class);
 Route::apiResource('teacher', TeacherController::class);
 Route::post('isDisplay/{id}',[TeacherController::class,'isDisplay']);
 
+Route::apiResource('teachercategory',TeacherCategoryController::class);
 
 Route::apiResource('career', CareerController::class);
 Route::post('eachcv/{cvname}',[CareerController::class,'eachcv']);

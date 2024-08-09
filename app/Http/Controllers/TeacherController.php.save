@@ -54,22 +54,22 @@ class TeacherController extends Controller
     {
 	if($request->hasfile('teacher_photo')){
 		$image = $request->file('teacher_photo');
-		$teacher_photo_path  = $request->name. "." .$image->extension();
-		$image->move(public_path(). '/schooldata/teacherphoto/',$teacher_photo_path);
-	}else{
-		$teacher_photo_path = "defaultteacher.JPG";
+		$teacher_photo_path = $request->name . "." .$image->extension();
+		$image->move(public_path().'schooldata/teacherphoto',$teacher_photo_path);
 	}
 
-
         $teacher = new teacher();
-        $teacher->teacher_category_id=$request->teacher_category_id;
+        $teacher->type=$request->type;
         $teacher->name=$request->name;
         $teacher->studied=$request->studied;
         $teacher->position=$request->position;
-       // $teacher->biography=$request->biography;
-        $teacher->isDisplay=$request->isdisplay;
-        $teacher->message=$request->message;
-        $teacher->teacher_photo_path=$teacher_photo_path;
+        $teacher->biography=$request->biography;
+        $teacher->isDisplay='0';
+        $teacher->about=$request->about;
+        $teacher->teacherimage=$request->teacherimage;
+
+  
+
 
         $teacher->save();
         return response()->json($teacher, 200);
@@ -106,21 +106,13 @@ class TeacherController extends Controller
      */
     public function update(UpdateteacherRequest $request, teacher $teacher)
     {
-	if($request->hasfile('teacher_photo')){
-	   $image = $request->file('teacher_photo');
-	   $teacher_photo_path = $request->name. "_rev." .$image->extension();
-	   $image->move(public_path(). "/schooldata/teacherphoto/",$teacher_photo_path);
-
-	}
-
-        $teacher->teacher_category_id=$request->teacher_category_id;
+        $teacher->type=$request->type;
         $teacher->name=$request->name;
         $teacher->studied=$request->studied;
         $teacher->position=$request->position;
-       // $teacher->biography=$request->biography;
-        $teacher->message=$request->message;
-	$teacher->isDisplay = $request->isdisplay;
-        $teacher->teacher_photo_path=$teacher_photo_path;
+        $teacher->biography=$request->biography;
+        $teacher->about=$request->about;
+        $teacher->teacherimage=$request->teacherimage;
 
         $teacher->update();
         return response()->json($teacher, 200);
