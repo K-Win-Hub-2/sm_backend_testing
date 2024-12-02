@@ -17,6 +17,7 @@ use App\Http\Controllers\EventlistController;
 use App\Http\Controllers\WaitinglistController;
 use App\Http\Controllers\securityauthController;
 use App\Http\Controllers\CalendarControllerController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -105,3 +106,5 @@ Route::post('updateposition/{id}',[PositionController::class,'updateposition']);
 Route::post('deleteposition/{id}',[PositionController::class,'DeletePosition']);
 Route::post('showposition',[PositionController::class,'showposition']);
 
+//Users
+Route::apiResource('user',UserController::class);

@@ -16,12 +16,12 @@ class securityauthController extends Controller
         $localtoken=$request->localtoken;
         $deviceID=$request->deviceID;
         $deleteanother= ActiveToken::where('tokendetail','<>',$localtoken)->where('userdeviceid','<>',$deviceID)->where('userid',$userID)->delete();
-  
+
         return response()->json([
-       
+
             'state' => 'deleted',
-            
-        ]);         
+
+        ]);
     }
     public function logout(Request $request)
     {
@@ -29,21 +29,21 @@ class securityauthController extends Controller
         $localtoken=$request->localtoken;
         $deviceID=$request->deviceID;
         $deleteanother= ActiveToken::where('tokendetail',$localtoken)->where('userdeviceid',$deviceID)->where('userid',$userID)->delete();
-  
+
         return response()->json([
-       
+
             'state' => 'logout',
-            
-        ]);         
+
+        ]);
     }
-    
+
     public function alreadyLogin(Request $request)
     {
         $userID=$request->userID;
         $localtoken=$request->localtoken;
         $deviceID=$request->deviceID;
         $actoken = ActiveToken::where('tokendetail',$localtoken)->where('userdeviceid',$deviceID)->where('userid',$userID)->first();
-  
+
 
 
         if($actoken)
@@ -54,15 +54,15 @@ class securityauthController extends Controller
                 'Token' => $actoken->tokendetail,
                 'deviceID' => $actoken->userdeviceid,
                 'state' => 'success',
-                
+
             ]);
         }
-        else 
+        else
         {
             return response()->json([
-            
+
                 'state' => 'failed',
-                
+
             ]);
         }
     }
@@ -76,28 +76,28 @@ class securityauthController extends Controller
           $deviceID=$request->deviceID;
 
           $user = useraccount::where('username',$username)->where('password',$password)->first();
-        
+
           if(!$user)
           {
-            
+
             return response()->json([
-                
+
                 'state' => 'failed',
-                
+
             ]);
 
           }
           else{
-           
+
             // if localstorage is avaliable and deviceid is avaliable
             $actoken = ActiveToken::where('tokendetail',$localtoken)->where('userdeviceid',$deviceID)->where('userid',$user_ID)->first();
-          
+
 
 
             if($actoken)
             {
                 $anotherDevice = ActiveToken::where('tokendetail','<>',$localtoken)->where('userdeviceid','<>',$deviceID)->where('userid',$user_ID)->first();
-            
+
                 if($anotherDevice)
                 {
                     $isanother='true';
@@ -111,12 +111,12 @@ class securityauthController extends Controller
                     'deviceID' => $actoken->userdeviceid,
                     'anotherDevice'=>$isanother,
                     'state' => 'alreadylogin',
-                    
+
                 ]);
             }
             else
             {
-             
+
                 $randtoken=Str::random(64);
                 date_default_timezone_set('Asia/Yangon');
                 $token=new ActiveToken();
@@ -125,7 +125,7 @@ class securityauthController extends Controller
                 $token->createdtime=date('d-m-y h:i:s');
                 $token->userdeviceid=$deviceID;
                 $token->Save();
-                
+
                 $anotherDevice = ActiveToken::where('tokendetail','<>',$randtoken)->where('userdeviceid','<>',$deviceID)->where('userid',$user->id)->first();
                 if($anotherDevice)
                 {
@@ -134,7 +134,7 @@ class securityauthController extends Controller
                 else{
                     $isanother='false';
                 }
-                
+
 
                 return response()->json([
                     'userid' => $user->id,
@@ -142,13 +142,13 @@ class securityauthController extends Controller
                     'deviceID' => $deviceID,
                     'anotherDevice'=>$isanother,
                     'state' => 'success',
-                    
+
                 ]);
             }
-          
 
-        
+
+
           }
-  
+
     }
 }
