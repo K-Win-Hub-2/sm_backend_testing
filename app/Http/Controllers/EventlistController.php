@@ -51,6 +51,34 @@ class EventlistController extends Controller
      * @param  \App\Http\Requests\StoreeventlistRequest  $request
      * @return \Illuminate\Http\Response
      */
+    // public function store(StoreeventlistRequest $request)
+    // {
+    //     date_default_timezone_set('Asia/Yangon');
+
+    //     $eventlist = new eventlist();
+    //     $eventlist->name=$request->name;
+    //     $eventlist->content=$request->content;
+    //     if ($request->hasFile('eventimg')) {
+    //         $path = $request->file('eventimg')->store('event_images', 'public');
+    //         $eventlist->eventimg = $path;
+    //     }
+    //     $eventlist->likecount=0;
+    //     $eventlist->reactcount=0;
+    //     $eventlist->time=date('d-m-y h:i:s');
+
+    //     $allList = eventList::all();
+    //     $firstListID = eventList::first()->id;
+    //     if($allList->count() > 7) {
+    //         $this->deleteEvent($firstListID);
+    //     }
+
+
+
+
+    //     $eventlist->save();
+    //     return response()->json($eventlist, 200);
+    // }
+
     public function store(StoreeventlistRequest $request)
     {
         date_default_timezone_set('Asia/Yangon');
@@ -58,10 +86,7 @@ class EventlistController extends Controller
         $eventlist = new eventlist();
         $eventlist->name=$request->name;
         $eventlist->content=$request->content;
-        if ($request->hasFile('eventimg')) {
-            $path = $request->file('eventimg')->store('event_images', 'public');
-            $eventlist->eventimg = $path;
-        }
+        $eventlist->eventimg=$request->eventimg;
         $eventlist->likecount=0;
         $eventlist->reactcount=0;
         $eventlist->time=date('d-m-y h:i:s');
