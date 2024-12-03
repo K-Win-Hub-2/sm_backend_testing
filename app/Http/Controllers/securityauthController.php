@@ -43,8 +43,13 @@ class securityauthController extends Controller
         $localtoken=$request->localtoken;
         $deviceID=$request->deviceID;
         $actoken = ActiveToken::where('tokendetail',$localtoken)->where('userdeviceid',$deviceID)->where('userid',$userID)->first();
-
-
+        $user = useraccount::findOrFail($userID);
+        $role = $user->role;
+          if($role === '0'){
+            $isSuperAdmin='true';
+          }else{
+            $isSuperAdmin='false';
+          }
 
         if($actoken)
         {
@@ -54,7 +59,7 @@ class securityauthController extends Controller
                 'Token' => $actoken->tokendetail,
                 'deviceID' => $actoken->userdeviceid,
                 'state' => 'success',
-
+                'isSuperAdmin' => $isSuperAdmin
             ]);
         }
         else

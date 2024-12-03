@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\eventlist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreeventlistRequest;
 use App\Http\Requests\UpdateeventlistRequest;
 
@@ -57,7 +58,10 @@ class EventlistController extends Controller
         $eventlist = new eventlist();
         $eventlist->name=$request->name;
         $eventlist->content=$request->content;
-        $eventlist->eventimg=$request->eventimg;
+        if ($request->hasFile('eventimg')) {
+            $path = $request->file('eventimg')->store('event_images', 'public');
+            $eventlist->eventimg = $path;
+        }
         $eventlist->likecount=0;
         $eventlist->reactcount=0;
         $eventlist->time=date('d-m-y h:i:s');
@@ -158,19 +162,55 @@ class EventlistController extends Controller
         return response()->json($eventlist, 200);
     }
 
-    public function updateEvent($id,Request $request)
+    // public function updateEvent($id,Request $request)
+    // {
+
+    //     //    return $id;
+
+    //     $eventlist = eventlist::find($id);
+
+    //     $eventlist->name=$request->name;
+    //     $eventlist->content=$request->content;
+    //     $eventlist->eventimg=$request->eventimg;
+
+    //     $eventlist->update();
+    //     return response()->json($eventlist, 200);
+    // }
+
+    public function updateEvent($id, Request $request)
     {
-
-        //    return $id;
-
+        // Find the event by ID
         $eventlist = eventlist::find($id);
 
-        $eventlist->name=$request->name;
-        $eventlist->content=$request->content;
-        $eventlist->eventimg=$request->eventimg;
+        if (!$eventlist) {
+            return response()->json(['error' => 'Event not found'], 404);
+        }
 
+        // Update name and content fields
+        $eventlist->name = $request->name;
+        $eventlist->content = $request->content;
+
+        // Check if a new image file is uploaded
+        if ($request->hasFile('eventimg')) {
+            // Delete the old image if it exists
+            if ($eventlist->eventimg) {
+                $oldImagePath = str_replace(asset('storage/'), '', $eventlist->eventimg); // Get relative path
+                Storage::disk('public')->delete($oldImagePath); // Delete the old image
+            }
+
+            // Store the new image
+            $path = $request->file('eventimg')->store('event_images', 'public');
+
+            // Save the relative path (without full URL) in the database
+            $eventlist->eventimg = $path;
+        }
+
+        // Save the updated record
         $eventlist->update();
+
+        // Convert the relative path to a full URL for the response
+        // $eventlist->eventimg = asset('storage/' . $eventlist->eventimg);
+
         return response()->json($eventlist, 200);
     }
-
 }
