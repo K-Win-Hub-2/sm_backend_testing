@@ -77,6 +77,12 @@ class securityauthController extends Controller
 
           $user = useraccount::where('username',$username)->where('password',$password)->first();
 
+          $role = $user->role;
+          if($role === '0'){
+            $isSuperAdmin='true';
+          }else{
+            $isSuperAdmin='false';
+          }
           if(!$user)
           {
 
@@ -111,7 +117,7 @@ class securityauthController extends Controller
                     'deviceID' => $actoken->userdeviceid,
                     'anotherDevice'=>$isanother,
                     'state' => 'alreadylogin',
-
+                    'isSuperAdmin' => $isSuperAdmin
                 ]);
             }
             else
@@ -142,7 +148,7 @@ class securityauthController extends Controller
                     'deviceID' => $deviceID,
                     'anotherDevice'=>$isanother,
                     'state' => 'success',
-
+                    'isSuperAdmin' => $isSuperAdmin
                 ]);
             }
 
