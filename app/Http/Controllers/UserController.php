@@ -95,7 +95,7 @@ class UserController extends Controller
             "password" => ['nullable', 'string', 'min:8'],
             "role" => ['sometimes', 'string', 'max:1'],
             "address" => ['nullable', 'string', 'max:255'],
-            "phone" => ['nullable', 'numeric', 'digits:11'],
+            "phone" => ['nullable', 'numeric', 'digits_between:11,20'],
             "tokendetail" => ['sometimes', 'string', 'max:255'],
             "userdeviceid" => ['sometimes', 'string', 'max:255'],
         ]);
