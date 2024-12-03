@@ -40,8 +40,6 @@ class UserController extends Controller
             "role" => ['required', 'string', 'max:1'], // 'enum' is not a valid rule. Use 'in' for specific values.
             "address" => ['nullable', 'string', 'max:255'],
             "phone" => ['nullable', 'numeric', 'digits:11'], // 'number' is not valid. Use 'numeric' or 'digits'
-            "tokendetail" => ['required', 'string', 'max:255'],
-            "userdeviceid" => ['required', 'string', 'max:255'],
         ]);
 
         // Check validation
@@ -59,9 +57,9 @@ class UserController extends Controller
         $user = useraccount::create($validatedData);
         ActiveToken::create([
             'userid' => $user->id,
-            'tokendetail' => $validatedData['tokendetail'],
+            'tokendetail' => $validatedData['tokendetail'] ?? null,
             'createdtime' => Carbon::now(),
-            'userdeviceid' => $validatedData['userdeviceid'],
+            'userdeviceid' => $validatedData['userdeviceid'] ?? null,
         ]);
 
         return response()->json([
