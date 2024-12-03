@@ -121,7 +121,7 @@ class UserController extends Controller
         $validatedData = $validator->validated();
 
         if (isset($validatedData['password'])) {
-            $validatedData['password'] = bcrypt($validatedData['password']); // Hash password if provided
+            $validatedData['password'] = $validatedData['password']; // Hash password if provided
         }
 
         $user->update($validatedData);
