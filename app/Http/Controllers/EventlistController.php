@@ -187,55 +187,55 @@ class EventlistController extends Controller
         return response()->json($eventlist, 200);
     }
 
-    // public function updateEvent($id,Request $request)
-    // {
-
-    //     //    return $id;
-
-    //     $eventlist = eventlist::find($id);
-
-    //     $eventlist->name=$request->name;
-    //     $eventlist->content=$request->content;
-    //     $eventlist->eventimg=$request->eventimg;
-
-    //     $eventlist->update();
-    //     return response()->json($eventlist, 200);
-    // }
-
-    public function updateEvent($id, Request $request)
+    public function updateEvent($id,Request $request)
     {
-        // Find the event by ID
+
+        //    return $id;
+
         $eventlist = eventlist::find($id);
 
-        if (!$eventlist) {
-            return response()->json(['error' => 'Event not found'], 404);
-        }
+        $eventlist->name=$request->name;
+        $eventlist->content=$request->content;
+        $eventlist->eventimg=$request->eventimg;
 
-        // Update name and content fields
-        $eventlist->name = $request->name;
-        $eventlist->content = $request->content;
-
-        // Check if a new image file is uploaded
-        if ($request->hasFile('eventimg')) {
-            // Delete the old image if it exists
-            if ($eventlist->eventimg) {
-                $oldImagePath = str_replace(asset('storage/'), '', $eventlist->eventimg); // Get relative path
-                Storage::disk('public')->delete($oldImagePath); // Delete the old image
-            }
-
-            // Store the new image
-            $path = $request->file('eventimg')->store('event_images', 'public');
-
-            // Save the relative path (without full URL) in the database
-            $eventlist->eventimg = $path;
-        }
-
-        // Save the updated record
         $eventlist->update();
-
-        // Convert the relative path to a full URL for the response
-        // $eventlist->eventimg = asset('storage/' . $eventlist->eventimg);
-
         return response()->json($eventlist, 200);
     }
+
+    // public function updateEvent($id, Request $request)
+    // {
+    //     // Find the event by ID
+    //     $eventlist = eventlist::find($id);
+
+    //     if (!$eventlist) {
+    //         return response()->json(['error' => 'Event not found'], 404);
+    //     }
+
+    //     // Update name and content fields
+    //     $eventlist->name = $request->name;
+    //     $eventlist->content = $request->content;
+
+    //     // Check if a new image file is uploaded
+    //     if ($request->hasFile('eventimg')) {
+    //         // Delete the old image if it exists
+    //         if ($eventlist->eventimg) {
+    //             $oldImagePath = str_replace(asset('storage/'), '', $eventlist->eventimg); // Get relative path
+    //             Storage::disk('public')->delete($oldImagePath); // Delete the old image
+    //         }
+
+    //         // Store the new image
+    //         $path = $request->file('eventimg')->store('event_images', 'public');
+
+    //         // Save the relative path (without full URL) in the database
+    //         $eventlist->eventimg = $path;
+    //     }
+
+    //     // Save the updated record
+    //     $eventlist->update();
+
+    //     // Convert the relative path to a full URL for the response
+    //     // $eventlist->eventimg = asset('storage/' . $eventlist->eventimg);
+
+    //     return response()->json($eventlist, 200);
+    // }
 }
