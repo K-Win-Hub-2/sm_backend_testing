@@ -39,7 +39,7 @@ class UserController extends Controller
             "password" => ['required', 'string', 'min:8'], // Ensure the password confirmation field is present
             "role" => ['required', 'string', 'max:1'], // 'enum' is not a valid rule. Use 'in' for specific values.
             "address" => ['nullable', 'string', 'max:255'],
-            "phone" => ['nullable', 'numeric', 'digits:11'], // 'number' is not valid. Use 'numeric' or 'digits'
+            "phone" => ['nullable', 'numeric', 'digits_between:11,20'], // 'number' is not valid. Use 'numeric' or 'digits'
         ]);
 
         // Check validation
