@@ -106,8 +106,9 @@ class ContactusController extends Controller
 
 
         if($request->Admission === 'admission') {
-          // $schoolEmail = "shwemawkunschool@gmail.com";
-          $schoolEmail = "academic@smkeducationgroup.com";
+        // $schoolEmail = "shwemawkunschool@gmail.com";
+        //   $schoolEmail = "academic@smkeducationgroup.com";
+        $schoolEmail = "info@smkeducationgroup.com";
         }
 
         $contactus = new contactus();
