@@ -40,6 +40,7 @@ Route::apiResource('calendar1', CalendarControllerController::class);
 Route::apiResource('comment', CommentController::class);
 
 Route::apiResource('eventinput', EventlistController::class);
+Route::get('event-list',[EventlistController::class, 'getEventList']);
 Route::post('deleteEvent/{id}',[EventlistController::class,'deleteEvent']);
 Route::post('updateEvent/{id}',[EventlistController::class,'updateEvent']);
 // Route::get('test',[EventlistController::class,'test1']);
