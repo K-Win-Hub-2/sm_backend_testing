@@ -17,7 +17,7 @@ class EventlistController extends Controller
      */
     public function index()
     {
-        $eventlist = eventlist::paginate(10);
+        $eventlist = eventlist::all();
         return response()->json($eventlist, 200);
     }
 
