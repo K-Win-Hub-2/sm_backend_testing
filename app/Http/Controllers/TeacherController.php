@@ -108,7 +108,6 @@ class TeacherController extends Controller
     public function update(UpdateteacherRequest $request,$id)
     {
         $teacher = teacher::findOrFail($id);
-        Log::info($request);
         $teacher_photo_path = $teacher->teacher_photo_path; // Retain the existing path if no new file is uploaded
         if($request->hasfile('teacher_photo')){
         $image = $request->file('teacher_photo');
