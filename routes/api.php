@@ -71,6 +71,7 @@ Route::apiResource('teachercategory',TeacherCategoryController::class);
 
 Route::apiResource('career', CareerController::class);
 Route::post('eachcv/{cvname}',[CareerController::class,'eachcv']);
+Route::get('eachcv/{cvname}',[CareerController::class,'getEachcv']);
 
 
 //Fees Delete

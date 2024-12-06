@@ -40,6 +40,21 @@ class CareerController extends Controller
         );
     }
 
+    public function getEachcv($cvname){
+        $path = public_path('storage/cv' . '/' . $cvname);
+
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 ='data:'.mime_content_type($path).';base64,'.base64_encode($data);
+
+
+        return response()->json(
+            [
+                'file'=>$base64,
+            ]
+        );
+    }
+
     /**
      * Show the form for creating a new resource.
      *
