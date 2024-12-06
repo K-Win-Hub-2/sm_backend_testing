@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TeacherCategory;
 use Illuminate\Http\Request;
+use App\Models\TeacherCategory;
+use Illuminate\Support\Facades\Log;
 use App\Http\Requests\StoreTeacherCategoryRequest;
 use App\Http\Requests\UpdateTeacherCategoryRequest;
 
@@ -19,7 +20,7 @@ class TeacherCategoryController extends Controller
         $teacher_categories = TeacherCategory::all();
         return response()->json($teacher_categories, 200);
     }
-  
+
     /**
      * Show the form for creating a new resource.
      *
@@ -30,18 +31,18 @@ class TeacherCategoryController extends Controller
         //
     }
    // public function search(Request $request){
-   
+
      //   $search=$request->search;
      //   if($search==""){
-       
-       
+
+
      //   }
      //   else{
      //       $data = teacher::where('name','LIKE','%'.$search.'%')->orWhere('position','LIKE','%'.$search.'%')
        //     ->orWhere('studied','LIKE','%'.$search.'%')->get();
          //   return response()->json($data, 200);
        // }
-      
+
     // }
 
     /**
@@ -54,8 +55,7 @@ class TeacherCategoryController extends Controller
     {
         $teacher_category = new TeacherCategory();
         $teacher_category->name=$request->name;
-	$teacher_category->description = $request->description;
-       
+	    $teacher_category->description = $request->description;
         $teacher_category->save();
         return response()->json($teacher_category, 200);
     }
@@ -89,13 +89,15 @@ class TeacherCategoryController extends Controller
      * @param  \App\Models\teacher  $teacher
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateTeacherCategoryRequest $request, TeacherCategory $teacher_category)
+    public function update(StoreTeacherCategoryRequest $request, $id)
     {
-        $teacher_category->name=$request->name;
-        $teacher_category->description=$request->description;
-       $teacher_category->update();
+        $teacher_category = TeacherCategory::findOrFail($id);
+        $teacher_category->name = $request->name;
+        $teacher_category->description = $request->description;
+        $teacher_category->save();
         return response()->json($teacher_category, 200);
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -103,10 +105,14 @@ class TeacherCategoryController extends Controller
      * @param  \App\Models\teacher  $teacher
      * @return \Illuminate\Http\Response
      */
-    public function destroy(TeacherCategory $teacher_category)
+    public function destroy($id)
     {
+        $teacher_category = TeacherCategory::findOrFail($id);
         $teacher_category->delete();
-        return response()->json($teacher_category, 200);
+        return response()->json([
+            "status" => "deleted",
+            "teacher_category" => $teacher_category,
+        ]);
     }
 
    // public function isDisplay($id,Request $request)

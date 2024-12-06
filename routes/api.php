@@ -65,9 +65,15 @@ Route::post('deleteWaitlist/{id}',[WaitinglistController::class,'deleteWaitlist'
 Route::apiResource('courses', CourseController::class);
 // teacher
 Route::apiResource('teacher', TeacherController::class);
+Route::post('teacher-update/{id}',[TeacherController::class,'update']);
+Route::delete('teacher-delete/{id}',[TeacherController::class,'destroy']);
+
 Route::post('isDisplay/{id}',[TeacherController::class,'isDisplay']);
 
 Route::apiResource('teachercategory',TeacherCategoryController::class);
+Route::put('teacher-category-update/{id}', [TeacherCategoryController::class, 'update']);
+Route::put('teacher-category-delete/{id}', [TeacherCategoryController::class, 'destroy']);
+
 
 Route::apiResource('career', CareerController::class);
 Route::post('eachcv/{cvname}',[CareerController::class,'eachcv']);

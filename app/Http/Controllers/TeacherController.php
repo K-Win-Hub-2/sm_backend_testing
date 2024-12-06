@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Requests\StoreteacherRequest;
 use App\Http\Requests\UpdateteacherRequest;
 
@@ -19,7 +20,7 @@ class TeacherController extends Controller
         $teacher = teacher::with('teacher_category')->get();
         return response()->json($teacher, 200);
     }
-  
+
     /**
      * Show the form for creating a new resource.
      *
@@ -30,18 +31,18 @@ class TeacherController extends Controller
         //
     }
     public function search(Request $request){
-   
+
         $search=$request->search;
         if($search==""){
-       
-       
+
+
         }
         else{
             $data = teacher::where('name','LIKE','%'.$search.'%')->orWhere('position','LIKE','%'.$search.'%')
             ->orWhere('studied','LIKE','%'.$search.'%')->get();
             return response()->json($data, 200);
         }
-      
+
      }
 
     /**
@@ -104,24 +105,24 @@ class TeacherController extends Controller
      * @param  \App\Models\teacher  $teacher
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateteacherRequest $request, teacher $teacher)
+    public function update(UpdateteacherRequest $request,$id)
     {
-	if($request->hasfile('teacher_photo')){
-	   $image = $request->file('teacher_photo');
-	   $teacher_photo_path = $request->name. "_rev." .$image->extension();
-	   $image->move(public_path(). "/schooldata/teacherphoto/",$teacher_photo_path);
-
-	}
-
+        $teacher = teacher::findOrFail($id);
+        Log::info($request);
+        $teacher_photo_path = $teacher->teacher_photo_path; // Retain the existing path if no new file is uploaded
+        if($request->hasfile('teacher_photo')){
+        $image = $request->file('teacher_photo');
+        $teacher_photo_path  = $request->name. "." .$image->extension();
+        $image->move(public_path(). "/schooldata/teacherphoto/",$teacher_photo_path);
+        }
         $teacher->teacher_category_id=$request->teacher_category_id;
         $teacher->name=$request->name;
         $teacher->studied=$request->studied;
         $teacher->position=$request->position;
        // $teacher->biography=$request->biography;
         $teacher->message=$request->message;
-	$teacher->isDisplay = $request->isdisplay;
+	    $teacher->isDisplay = $request->isdisplay;
         $teacher->teacher_photo_path=$teacher_photo_path;
-
         $teacher->update();
         return response()->json($teacher, 200);
     }
@@ -132,10 +133,14 @@ class TeacherController extends Controller
      * @param  \App\Models\teacher  $teacher
      * @return \Illuminate\Http\Response
      */
-    public function destroy(teacher $teacher)
+    public function destroy($id)
     {
+        $teacher = teacher::findOrFail($id);
         $teacher->delete();
-        return response()->json($teacher, 200);
+        return response()->json([
+            "status" => "deleted",
+            "teacher" => $teacher
+        ]);
     }
 
     public function isDisplay($id,Request $request)

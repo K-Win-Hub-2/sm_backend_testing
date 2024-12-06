@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class TeacherCategory extends Model
 {
     use HasFactory;
-    protected $fillable=['name','description'];
+    protected $guarded = [];
 }
