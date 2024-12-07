@@ -73,6 +73,7 @@ Route::post('isDisplay/{id}',[TeacherController::class,'isDisplay']);
 Route::apiResource('teachercategory',TeacherCategoryController::class);
 Route::put('teacher-category-update/{id}', [TeacherCategoryController::class, 'update']);
 Route::delete('teacher-category-delete/{id}', [TeacherCategoryController::class, 'destroy']);
+Route::get('teacher-category-list', [TeacherCategoryController::class, 'teacherCategory']);
 
 
 Route::apiResource('career', CareerController::class);

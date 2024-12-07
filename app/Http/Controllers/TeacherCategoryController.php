@@ -17,7 +17,7 @@ class TeacherCategoryController extends Controller
      */
     public function index()
     {
-        $teacher_categories = TeacherCategory::all();
+        $teacher_categories = TeacherCategory::with('teachers')->get();
         return response()->json($teacher_categories, 200);
     }
 
@@ -122,4 +122,8 @@ class TeacherCategoryController extends Controller
       //  $teacher->update();
        // return response()->json($teacher, 200);
    // }
+   public function teacherCategory(){
+    $teacher_categories = TeacherCategory::with('teachers')->get();
+    return response()->json($teacher_categories, 200);
+   }
 }

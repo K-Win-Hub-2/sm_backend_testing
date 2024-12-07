@@ -55,7 +55,7 @@ class TeacherController extends Controller
     {
 	if($request->hasfile('teacher_photo')){
 		$image = $request->file('teacher_photo');
-        $trimmedName = trim($request->name);
+        $trimmedName = str_replace(' ', '', trim($request->name));
         $teacher_photo_path  = $trimmedName. "." .$image->extension();
 		$image->move(public_path(). '/schooldata/teacherphoto/',$teacher_photo_path);
 	}else{
@@ -112,7 +112,7 @@ class TeacherController extends Controller
         $teacher_photo_path = $teacher->teacher_photo_path; // Retain the existing path if no new file is uploaded
         if($request->hasfile('teacher_photo')){
         $image = $request->file('teacher_photo');
-        $trimmedName = trim($request->name);
+        $trimmedName = str_replace(' ', '', trim($request->name));
         $teacher_photo_path  = $trimmedName. "." .$image->extension();
         $image->move(public_path(). "/schooldata/teacherphoto/",$teacher_photo_path);
         }
