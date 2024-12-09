@@ -5,19 +5,20 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\securityauth;
 use App\Http\Controllers\FeesController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\YearController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\TeacherController;
-use App\Http\Controllers\TeacherCategoryController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ContactusController;
 use App\Http\Controllers\EventlistController;
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\WaitinglistController;
 use App\Http\Controllers\securityauthController;
+use App\Http\Controllers\TeacherCategoryController;
 use App\Http\Controllers\CalendarControllerController;
-use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,3 +118,8 @@ Route::post('showposition',[PositionController::class,'showposition']);
 
 //Users
 Route::apiResource('user',UserController::class);
+
+//Appointments
+Route::apiResource('appointments',AppointmentController::class);
+Route::post('appointments-confirmed/{id}',[AppointmentController::class,'appointmentConfirmed']);
+Route::post('appointments-canceled/{id}',[AppointmentController::class,'appointmentCanceled']);
