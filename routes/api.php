@@ -123,3 +123,6 @@ Route::apiResource('user',UserController::class);
 Route::apiResource('appointments',AppointmentController::class);
 Route::post('appointments-confirmed/{id}',[AppointmentController::class,'appointmentConfirmed']);
 Route::post('appointments-canceled/{id}',[AppointmentController::class,'appointmentCanceled']);
+
+//TimeSlots
+

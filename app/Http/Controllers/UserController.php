@@ -16,14 +16,32 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = useraccount::get();
+        // Get the search query parameter (search)
+        $search = $request->query('search', null);
+
+        // Build the query
+        $query = useraccount::query();
+
+        // Apply search filter if provided
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                // Assuming you want to search by username and email, adjust as needed
+                $q->where('username', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Execute the query to get the users
+        $users = $query->get();
+
+        // Return the response with status code and users
         return response()->json([
             "status" => 200,
-            'users' => $users
+            "users" => $users
         ]);
     }
+
 
     /**
      * Store a newly created resource in storage.

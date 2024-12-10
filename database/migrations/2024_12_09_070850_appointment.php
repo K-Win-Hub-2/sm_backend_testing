@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('phone');
             $table->date('booking_date');
             $table->time('booking_time');
+            $table->tinyInteger('status');
             $table->timestamps();
         });
     }

@@ -17,19 +17,31 @@ class AppointmentController extends Controller
         // Get the status query parameter, default to return all statuses if not provided
         $status = $request->query('status', null);
 
-        // If a specific status is requested, filter by that status
+        // Get the general search query parameter (search)
+        $search = $request->query('search', null);
+
+        // Build the query
+        $query = Appointment::with('courses');
+
+        // Apply status filter if provided
         if ($status !== null) {
-            $appointments = Appointment::with('courses')
-                ->where('status', $status)
-                ->get();
-        } else {
-            // Otherwise, return all appointments
-            $appointments = Appointment::with('courses')->get();
+            $query->where('status', $status);
         }
+
+        // Apply general search filter if provided
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('parent_name', 'like', '%' . $search . '%')
+                  ->orWhere('student_name', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+
+        // Execute the query
+        $appointments = $query->get();
 
         return response()->json($appointments);
     }
-
 
     /**
      * Store a newly created resource in storage.
