@@ -10,11 +10,13 @@ use App\Http\Controllers\YearController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DaySlotController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ContactusController;
 use App\Http\Controllers\EventlistController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\BookingSlotController;
 use App\Http\Controllers\WaitinglistController;
 use App\Http\Controllers\securityauthController;
 use App\Http\Controllers\TeacherCategoryController;
@@ -125,4 +127,5 @@ Route::post('appointments-confirmed/{id}',[AppointmentController::class,'appoint
 Route::post('appointments-canceled/{id}',[AppointmentController::class,'appointmentCanceled']);
 
 //TimeSlots
-
+Route::apiResource('booking-slots',BookingSlotController::class);
+Route::apiResource('time-slots',DaySlotController::class);
