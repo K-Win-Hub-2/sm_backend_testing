@@ -128,4 +128,4 @@ Route::post('appointments-canceled/{id}',[AppointmentController::class,'appointm
 
 //TimeSlots
 Route::apiResource('booking-slots',BookingSlotController::class);
-Route::apiResource('time-slots',DaySlotController::class);
+Route::apiResource('day-slots',DaySlotController::class);
