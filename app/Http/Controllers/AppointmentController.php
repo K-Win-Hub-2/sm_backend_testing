@@ -162,11 +162,19 @@ class AppointmentController extends Controller
     public function destroy($id)
     {
         $appointment = Appointment::findOrFail($id);
+
+        // Delete associated DaySlot if it exists
+        DaySlot::where('appointment_id', $appointment->id)->delete();
+
+        // Detach associated courses
         $appointment->courses()->detach();
+
+        // Delete the appointment
         $appointment->delete();
 
         return response()->json(['message' => 'Appointment deleted successfully']);
     }
+
 
     public function appointmentConfirmed($id)
     {
