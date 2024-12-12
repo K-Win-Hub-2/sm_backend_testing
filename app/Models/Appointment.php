@@ -13,4 +13,8 @@ class Appointment extends Model
     {
         return $this->belongsToMany(Course::class, 'appointment_course');
     }
+    public function daySlot()
+    {
+        return $this->hasOne(DaySlot::class,'appointment_id');
+    }
 }

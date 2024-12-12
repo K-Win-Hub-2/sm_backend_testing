@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\DaySlot;
 use Illuminate\Http\Request;
 
 class AppointmentController extends Controller
@@ -21,7 +22,7 @@ class AppointmentController extends Controller
         $search = $request->query('search', null);
 
         // Build the query
-        $query = Appointment::with('courses');
+        $query = Appointment::with('courses','daySlot');
 
         // Apply status filter if provided
         if ($status !== null) {
@@ -57,10 +58,23 @@ class AppointmentController extends Controller
             'email' => 'required|email',
             'phone' => 'nullable|string',
             'booking_date' => 'required|date',
-            'booking_time' => 'required|date_format:H:i',
+            'booking_slot_id' => 'required|integer',
             'courses' => 'required|array',
             'courses.*' => 'exists:courses,id', // Ensure course IDs exist
         ]);
+
+        // Check if the booking slot is already taken
+        $existingDaySlot = DaySlot::where([
+            ['booking_slot_id', $request->booking_slot_id],
+            ['date', $request->booking_date],
+            ['status', '1'] // Assuming '1' means booked
+        ])->first();
+
+        if ($existingDaySlot) {
+            return response()->json([
+                'message' => 'The selected booking slot is already taken.'
+            ], 422);
+        }
 
         // Exclude 'courses' from the validated data
         $appointmentData = collect($validated)->except('courses')->toArray();
@@ -68,12 +82,23 @@ class AppointmentController extends Controller
         // Create the appointment
         $appointment = Appointment::create($appointmentData);
 
+        $daySlot = DaySlot::create([
+            'appointment_id' => $appointment->id,
+            'booking_slot_id' => $request->booking_slot_id,
+            'date' => $request->booking_date,
+            'status' => '0', // Booked status by default
+        ]);
+
         // Attach courses to the pivot table
         $appointment->courses()->sync($request->input('courses'));
 
         // Return the response with the appointment and related courses
-        return response()->json($appointment->load('courses'), 201);
+        return response()->json([
+            'appointment' => $appointment->load('courses'),
+            'daySlot' => $daySlot
+        ], 201);
     }
+
 
     /**
      * Display the specified resource.
@@ -143,16 +168,32 @@ class AppointmentController extends Controller
         return response()->json(['message' => 'Appointment deleted successfully']);
     }
 
-    public function appointmentConfirmed($id){
+    public function appointmentConfirmed($id)
+    {
         $appointment = Appointment::findOrFail($id);
-        $appointment->status = 1;
+        $appointment->status = '1'; // Set status as '1' (string)
         $appointment->save();
+
+        if ($appointment->daySlot) {
+            $appointment->daySlot->status = '1'; // Set daySlot status as '1' (string)
+            $appointment->daySlot->save(); // Save the daySlot
+        }
+
         return response()->json(['message' => 'Appointment confirmed successfully']);
     }
-    public function appointmentCanceled($id){
+
+    public function appointmentCanceled($id)
+    {
         $appointment = Appointment::findOrFail($id);
-        $appointment->status = 2;
+        $appointment->status = '2'; // Set status as '2' (string)
         $appointment->save();
+
+        if ($appointment->daySlot) {
+            $appointment->daySlot->status = '2'; // Set daySlot status as '2' (string)
+            $appointment->daySlot->save(); // Save the daySlot
+        }
+
         return response()->json(['message' => 'Appointment canceled successfully']);
     }
+
 }

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->date('booking_date');
-            $table->time('booking_time');
+            $table->foreignId('booking_slot_id')->constrained()->cascadeOnDelete();
             $table->tinyInteger('status');
             $table->timestamps();
         });
