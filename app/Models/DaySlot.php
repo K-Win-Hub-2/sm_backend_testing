@@ -13,4 +13,8 @@ class DaySlot extends Model
     {
         return $this->belongsTo(BookingSlot::class);
     }
+    public function appointment()
+    {
+        return $this->belongsTo(Appointment::class);
+    }
 }

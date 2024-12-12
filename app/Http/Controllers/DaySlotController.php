@@ -14,7 +14,7 @@ class DaySlotController extends Controller
      */
     public function index()
     {
-        $daySlots = DaySlot::with('bookingSlot')->get();
+        $daySlots = DaySlot::with('bookingSlot','appointment')->get();
         return response()->json($daySlots);
     }
 
