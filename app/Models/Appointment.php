@@ -17,4 +17,8 @@ class Appointment extends Model
     {
         return $this->hasOne(DaySlot::class,'appointment_id');
     }
+    public function bookingSlot()
+    {
+        return $this->belongsTo(BookingSlot::class);
+    }
 }

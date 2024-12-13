@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appointment;
+use App\Mail\ThankYou;
 use App\Models\DaySlot;
+use App\Models\Appointment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
 {
@@ -22,7 +24,7 @@ class AppointmentController extends Controller
         $search = $request->query('search', null);
 
         // Build the query
-        $query = Appointment::with('courses','daySlot');
+        $query = Appointment::with('courses','daySlot','bookingSlot');
 
         // Apply status filter if provided
         if ($status !== null) {
@@ -81,7 +83,11 @@ class AppointmentController extends Controller
 
         // Create the appointment
         $appointment = Appointment::create($appointmentData);
+        $email= $request->Email;
+        $schoolEmail = "shwemawkunschool@gmail.com";
+        $name=$request->parent_name;
 
+        Mail::to($email)->cc($schoolEmail)->send(new ThankYou($name));
         $daySlot = DaySlot::create([
             'appointment_id' => $appointment->id,
             'booking_slot_id' => $request->booking_slot_id,
@@ -178,17 +184,26 @@ class AppointmentController extends Controller
 
     public function appointmentConfirmed($id)
     {
+        // Find the appointment by ID
         $appointment = Appointment::findOrFail($id);
-        $appointment->status = '1'; // Set status as '1' (string)
+        // Proceed to confirm the appointment
+        $appointment->status = '1'; // Set status as '1' (confirmed)
         $appointment->save();
 
+
+        // Check if the appointment is already confirmed (status '1')
+        if ($appointment->daySlot->status === '1') {
+            return response()->json(['message' => 'This appointment has already been confirmed.'], 400); // Return a 400 status code with a message
+        }
+        // Check if the appointment has a daySlot and confirm it as well
         if ($appointment->daySlot) {
-            $appointment->daySlot->status = '1'; // Set daySlot status as '1' (string)
+            $appointment->daySlot->status = '1'; // Set daySlot status as '1' (confirmed)
             $appointment->daySlot->save(); // Save the daySlot
         }
 
         return response()->json(['message' => 'Appointment confirmed successfully']);
     }
+
 
     public function appointmentCanceled($id)
     {
