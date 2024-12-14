@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class ThankYou extends Mailable
+class ConfirmedAppointment extends Mailable
 {
     public $name2;
     use Queueable, SerializesModels;
@@ -29,6 +29,6 @@ class ThankYou extends Mailable
      */
     public function build()
     {
-        return $this->view('contactusmail')->subject(  ' Thank you For contacting us.'  );
+        return $this->view('confirmed-appointment')->subject(  ' Thank you For contacting us.'  );
     }
 }

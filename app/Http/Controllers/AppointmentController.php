@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\CanceledAppointment;
+use App\Mail\ConfirmedAppointment;
 use App\Mail\ThankYou;
 use App\Models\DaySlot;
 use App\Models\Appointment;
@@ -45,6 +47,25 @@ class AppointmentController extends Controller
 
         return response()->json($appointments);
     }
+
+    public function appointmentSearch(Request $request)
+    {
+        // Get the general search query parameter (search)
+        $search = $request->query('search', null);
+        // Build the query
+        $query = Appointment::with('courses','daySlot','bookingSlot');
+        // Apply general search filter if provided
+        if ($search) {
+            $query->where(function($q) use ($search) {
+                $q->where('phone', 'like', '%' . $search . '%')
+                  ->orWhere('email', 'like', '%' . $search . '%');
+            });
+        }
+        // Execute the query
+        $appointments = $query->get();
+        return response()->json($appointments);
+    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -190,7 +211,10 @@ class AppointmentController extends Controller
         $appointment->status = '1'; // Set status as '1' (confirmed)
         $appointment->save();
 
-
+        $email= $appointment->email;
+        $schoolEmail = "shwemawkunschool@gmail.com";
+        $name=$appointment->parent_name;
+        Mail::to($email)->cc($schoolEmail)->send(new ConfirmedAppointment($name));
         // Check if the appointment is already confirmed (status '1')
         if ($appointment->daySlot->status === '1') {
             return response()->json(['message' => 'This appointment has already been confirmed.'], 400); // Return a 400 status code with a message
@@ -211,6 +235,11 @@ class AppointmentController extends Controller
         $appointment->status = '2'; // Set status as '2' (string)
         $appointment->save();
 
+        $email= $appointment->email;
+        $schoolEmail = "shwemawkunschool@gmail.com";
+        $name=$appointment->parent_name;
+        Mail::to($email)->cc($schoolEmail)->send(new CanceledAppointment($name));
+
         if ($appointment->daySlot) {
             $appointment->daySlot->status = '2'; // Set daySlot status as '2' (string)
             $appointment->daySlot->save(); // Save the daySlot
@@ -218,5 +247,4 @@ class AppointmentController extends Controller
 
         return response()->json(['message' => 'Appointment canceled successfully']);
     }
-
 }

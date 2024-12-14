@@ -123,6 +123,7 @@ Route::apiResource('user',UserController::class);
 
 //Appointments
 Route::apiResource('appointments',AppointmentController::class);
+Route::post('appointments-search',[AppointmentController::class,'appointmentSearch']);
 Route::post('appointments-confirmed/{id}',[AppointmentController::class,'appointmentConfirmed']);
 Route::post('appointments-canceled/{id}',[AppointmentController::class,'appointmentCanceled']);
 
