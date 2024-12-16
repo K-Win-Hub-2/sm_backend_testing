@@ -30,7 +30,7 @@ class DaySlotController extends Controller
         // Check if any matching records exist where `status = 1`
         $daySlots = DaySlot::where(function ($query) use ($bookingSlotApi, $date) {
             $query->where('booking_slot_id', $bookingSlotApi)
-                  ->orWhere('date', $date);
+                  ->where('date', $date);
         })->where('status', '1')->exists(); // Ensures `status = 1` is required
 
         return response()->json([
