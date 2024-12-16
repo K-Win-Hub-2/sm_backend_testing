@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DaySlot;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DaySlotController extends Controller
 {
@@ -17,6 +18,27 @@ class DaySlotController extends Controller
         $daySlots = DaySlot::with('bookingSlot','appointment')->get();
         return response()->json($daySlots);
     }
+
+    public function daySlotsChecker(Request $request)
+    {
+        $bookingSlotApi = $request->booking_slot_id;
+        $date = $request->date;
+
+        Log::info($bookingSlotApi);
+        Log::info($date);
+
+        // Check if any matching records exist where `status = 1`
+        $daySlots = DaySlot::where(function ($query) use ($bookingSlotApi, $date) {
+            $query->where('booking_slot_id', $bookingSlotApi)
+                  ->orWhere('date', $date);
+        })->where('status', '1')->exists(); // Ensures `status = 1` is required
+
+        return response()->json([
+            'status' => 'success',
+            'appointment_status' => $daySlots
+        ]);
+    }
+
 
     /**
      * Store a newly created resource in storage.
