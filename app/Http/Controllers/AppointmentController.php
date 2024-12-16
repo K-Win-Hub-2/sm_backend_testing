@@ -52,19 +52,25 @@ class AppointmentController extends Controller
     {
         // Get the general search query parameter (search)
         $search = $request->query('search', null);
+
         // Build the query
-        $query = Appointment::with('courses','daySlot','bookingSlot');
+        $query = Appointment::with('courses', 'daySlot', 'bookingSlot');
+
         // Apply general search filter if provided
         if ($search) {
             $query->where(function($q) use ($search) {
-                $q->where('phone', 'like', '%' . $search . '%')
-                  ->orWhere('email', 'like', '%' . $search . '%');
+                // Exact match search for phone or email
+                $q->where('phone', $search)
+                  ->orWhere('email', $search);
             });
         }
+
         // Execute the query
         $appointments = $query->get();
+
         return response()->json($appointments);
     }
+
 
 
     /**
