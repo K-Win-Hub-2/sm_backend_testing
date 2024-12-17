@@ -29,7 +29,7 @@ class UpdateteacherRequest extends FormRequest
             'name' => 'required|string|max:255', // Required and cannot exceed 255 characters
             'studied' => 'nullable|string|max:255', // Optional, max 255 characters
             'position' => 'nullable|string|max:255', // Optional, max 255 characters
-            'message' => 'nullable|string|max:1000', // Optional, max 1000 characters
+            'message' => 'nullable|string', // Optional, max 1000 characters
             'isdisplay' => 'required|boolean', // Must be a boolean value
         ];
     }
