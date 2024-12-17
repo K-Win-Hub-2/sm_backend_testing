@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Year;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class YearController extends Controller
 {
@@ -36,11 +37,10 @@ class YearController extends Controller
         return response()->json($year, 200);
     }
     public function update(Request $request) {
-        $year = Year::find(1);
+        $year = Year::find($request->id);
         $year->year = $request->year;
         $year->discription = json_encode($request->discription);
         $year->save();
         return response()->json($year,200);
     }
-
 }

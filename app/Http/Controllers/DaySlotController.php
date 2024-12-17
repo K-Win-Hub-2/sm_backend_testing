@@ -23,10 +23,6 @@ class DaySlotController extends Controller
     {
         $bookingSlotApi = $request->booking_slot_id;
         $date = $request->date;
-
-        Log::info($bookingSlotApi);
-        Log::info($date);
-
         // Check if any matching records exist where `status = 1`
         $daySlots = DaySlot::where(function ($query) use ($bookingSlotApi, $date) {
             $query->where('booking_slot_id', $bookingSlotApi)
