@@ -111,7 +111,7 @@ class AppointmentController extends Controller
         // Create the appointment
         $appointment = Appointment::create($appointmentData);
         $email= $request->Email;
-        $schoolEmail = "shwemawkunschool@gmail.com";
+        $schoolEmail = "info@smkeducationgroup.com";
         $name=$request->parent_name;
 
         Mail::to($email)->cc($schoolEmail)->send(new ThankYou($name));
