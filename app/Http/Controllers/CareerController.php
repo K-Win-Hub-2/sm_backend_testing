@@ -91,7 +91,10 @@ class CareerController extends Controller
         $Career->about=$request->about;
         $Career->estatus=$request->estatus;
         $Career->save();
-
+        $schoolEmail = "academic@smkeducationgroup.com";
+        $email= $request->Email;
+        $name=$request->name;
+        Mail::to($email)->cc($schoolEmail)->send(new ThankYou($name));
         // Mail::to('winkoslb2015@gmail.com')->cc('thandarmt.93@gmail.com')->send(new shwemawkun($request->name,$request->studied,
         // $request->position,$request->phone,$request->email,$request->about,$newNa));
 
