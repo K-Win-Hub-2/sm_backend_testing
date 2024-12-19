@@ -6,11 +6,13 @@ use File;
 use App\Mail\ThankYou;
 
 use App\Models\Career;
+use App\Mail\CareerMail;
 use App\Mail\shwemawkun;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreCareerRequest;
 use App\Http\Requests\UpdateCareerRequest;
+use App\Mail\CareerApplierMail;
 
 class CareerController extends Controller
 {
@@ -73,14 +75,9 @@ class CareerController extends Controller
      */
     public function store(StoreCareerRequest $request)
     {
-
-
         $newname=rand(0, 99999999);
-
         $newNa=$newname.".".$request->file('file')->extension();
         $upload=$request->file('file')->storeAs('public/cv',$newNa);
-
-
         $Career = new Career();
         $Career->filename=$newNa;
         $Career->name=$request->name;
@@ -94,11 +91,18 @@ class CareerController extends Controller
         $schoolEmail = "academic@smkeducationgroup.com";
         $email= $request->email;
         $name=$request->name;
-        Mail::to($email)->cc($schoolEmail)->send(new ThankYou($name));
-        // Mail::to('winkoslb2015@gmail.com')->cc('thandarmt.93@gmail.com')->send(new shwemawkun($request->name,$request->studied,
-        // $request->position,$request->phone,$request->email,$request->about,$newNa));
-
-        // Mail::to($request->email)->cc('thandarmt.93@gmail.com')->send(new ThankYou($request->name));
+        $filePath = storage_path("app/public/cv/$newNa");
+        Mail::to($schoolEmail)->send(new CareerMail(
+            $name,
+            $filePath,
+            $Career->studied,
+            $Career->position,
+            $Career->phone,
+            $Career->email,
+            $Career->estatus,
+            $Career->about,
+        ));
+        Mail::to($email)->send(new CareerApplierMail($name));
         return response()->json($Career, 200);
     }
 

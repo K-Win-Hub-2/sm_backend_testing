@@ -6,7 +6,9 @@ use view;
 use App\Mail\SignUp;
 use App\Mail\ThankYou;
 use App\Models\contactus;
+use App\Mail\ContactUsMail;
 use Illuminate\Http\Request;
+use App\Mail\ContactUsApplierMail;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StorecontactusRequest;
 use App\Http\Requests\UpdatecontactusRequest;
@@ -102,7 +104,8 @@ class ContactusController extends Controller
        public function sendMail(Request $request)
        {
         // $schoolEmail = "academic@smkeducationgroup.com";
-        $schoolEmail = "shwemawkunschool@gmail.com";
+        // $schoolEmail = "shwemawkunschool@gmail.com";
+        $schoolEmail = "info@smkeducationgroup.com";
 
 
         if($request->Admission === 'admission') {
@@ -126,7 +129,18 @@ class ContactusController extends Controller
         $email= $request->Email;
         $name=$request->Name;
 
-        Mail::to($email)->cc($schoolEmail)->send(new ThankYou($name));
+        // Mail::to($email)->cc($schoolEmail)->send(new ThankYou($name));
+
+        Mail::to($schoolEmail)->send(new ContactUsMail(
+            $name,
+            $contactus->email,
+            $contactus->phone,
+            $contactus->subject,
+            $contactus->content
+        ));
+
+        Mail::to($email)->send(new ContactUsApplierMail($name));
+
       // Mail::to($email)->cc('thandarmt.93@gmail.com')->send(new ThankYou($name));
 
         return response()->json($contactus, 200);

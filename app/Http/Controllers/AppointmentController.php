@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\CanceledAppointment;
-use App\Mail\ConfirmedAppointment;
+use App\Mail\AppointmentApplierMail;
 use App\Mail\ThankYou;
+use App\Models\Course;
 use App\Models\DaySlot;
 use App\Models\Appointment;
+use App\Models\BookingSlot;
 use Illuminate\Http\Request;
+use App\Mail\CanceledAppointment;
+use App\Mail\ConfirmedAppointment;
 use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
@@ -111,10 +114,15 @@ class AppointmentController extends Controller
         // Create the appointment
         $appointment = Appointment::create($appointmentData);
         $email= $request->email;
-        $schoolEmail = "info@smkeducationgroup.com";
+        // $schoolEmail = "info@smkeducationgroup.com";
+        $schoolEmail = "linuxcleaner15@gmail.com";
         $name=$request->parent_name;
+        $booking_date = $request->booking_date;
+        $booking_slot = BookingSlot::find($request->booking_slot_id); // Assuming you have a `BookingSlot` model
+        // $courses = Course::whereIn('id', $request->courses)->pluck('name'); // Fetch course names
+        Mail::to($email)->send(new AppointmentApplierMail($name, $booking_date, $booking_slot->name));
 
-        Mail::to($email)->cc($schoolEmail)->send(new ThankYou($name));
+        Mail::to($schoolEmail)->send(new ThankYou($name));
         $daySlot = DaySlot::create([
             'appointment_id' => $appointment->id,
             'booking_slot_id' => $request->booking_slot_id,
