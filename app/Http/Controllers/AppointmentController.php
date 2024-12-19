@@ -110,7 +110,7 @@ class AppointmentController extends Controller
 
         // Create the appointment
         $appointment = Appointment::create($appointmentData);
-        $email= $request->Email;
+        $email= $request->email;
         $schoolEmail = "info@smkeducationgroup.com";
         $name=$request->parent_name;
 
