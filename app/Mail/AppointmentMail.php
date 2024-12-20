@@ -9,24 +9,34 @@ use Illuminate\Queue\SerializesModels;
 
 class AppointmentMail extends Mailable
 {
-    public $name2;
-    public $appointment_date;
-    public $appointment_time;
-    public $appointment_purpose;
-
     use Queueable, SerializesModels;
+
+    public $name;
+    public $parent_name;
+    public $student_name;
+    public $email;
+    public $phone;
+    public $booking_date;
+    public $dayType;
+    public $start_time;
+    public $end_time;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($name, $appointment_date, $appointment_time, $appointment_purpose)
+    public function __construct($name, $parent_name, $student_name, $email, $phone, $booking_date, $dayType, $start_time, $end_time)
     {
-        $this->name2 = $name;
-        $this->appointment_date = $appointment_date;
-        $this->appointment_time = $appointment_time;
-        $this->appointment_purpose = $appointment_purpose;
+        $this->name = $name;
+        $this->parent_name = $parent_name;
+        $this->student_name = $student_name;
+        $this->email = $email;
+        $this->phone = $phone;
+        $this->booking_date = $booking_date;
+        $this->dayType = $dayType;
+        $this->start_time = $start_time;
+        $this->end_time = $end_time;
     }
 
     /**
@@ -39,10 +49,15 @@ class AppointmentMail extends Mailable
         return $this->view('appointment-email')
                     ->subject('Appointment Confirmation - Shwe Maw Kun Private School')
                     ->with([
-                        'name2' => $this->name2,
-                        'appointment_date' => $this->appointment_date,
-                        'appointment_time' => $this->appointment_time,
-                        'appointment_purpose' => $this->appointment_purpose,
+                        'name' => $this->name,
+                        'parent_name' => $this->parent_name,
+                        'student_name' => $this->student_name,
+                        'email' => $this->email,
+                        'phone' => $this->phone,
+                        'booking_date' => $this->booking_date,
+                        'dayType' => $this->dayType,
+                        'start_time' => $this->start_time,
+                        'end_time' => $this->end_time,
                     ]);
     }
 }

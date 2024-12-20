@@ -93,74 +93,65 @@ class ContactusController extends Controller
 
     }
 
-        public function deleteContactus($id)
-        {
-            $contactus = contactus::find($id);
-            $contactus->delete();
-            return response()->json($contactus, 200);
-        }
-
-
-       public function sendMail(Request $request)
-       {
-        // $schoolEmail = "academic@smkeducationgroup.com";
-        // $schoolEmail = "shwemawkunschool@gmail.com";
-        $schoolEmail = "info@smkeducationgroup.com";
-
-
-        if($request->Admission === 'admission') {
-        // $schoolEmail = "shwemawkunschool@gmail.com";
-        //   $schoolEmail = "academic@smkeducationgroup.com";
-        $schoolEmail = "info@smkeducationgroup.com";
-        }
-
-        $contactus = new contactus();
-
-        $contactus->name=$request->Name;
-        $contactus->email=$request->Email;
-        $contactus->phone=$request->Phone;
-        $contactus->subject=$request->Subject;
-        $contactus->content=$request->Content;
-
-
-
-        $contactus->save();
-
-        $email= $request->Email;
-        $name=$request->Name;
-
-        // Mail::to($email)->cc($schoolEmail)->send(new ThankYou($name));
-
-        Mail::to($schoolEmail)->send(new ContactUsMail(
-            $name,
-            $contactus->email,
-            $contactus->phone,
-            $contactus->subject,
-            $contactus->content
-        ));
-
-        Mail::to($email)->send(new ContactUsApplierMail($name));
-
-      // Mail::to($email)->cc('thandarmt.93@gmail.com')->send(new ThankYou($name));
-
+    public function deleteContactus($id)
+    {
+        $contactus = contactus::find($id);
+        $contactus->delete();
         return response()->json($contactus, 200);
-
-        // Mail::to($email)->send(new SignUp());
-
-       }
+    }
 
 
-       public function mailform(Request $request)
-       {
-        $name2= 'sithuhein26@gmail.com';
+    public function sendMail(Request $request)
+    {
+    // $schoolEmail = "academic@smkeducationgroup.com";
+    // $schoolEmail = "shwemawkunschool@gmail.com";
+    $schoolEmail = "info@smkeducationgroup.com";
 
-        return view('contactusmail',compact('name2'));
-       }
+    if($request->Admission === 'admission') {
+        $schoolEmail = "info@smkeducationgroup.com";
+    }
 
-       public function sendemail(Request $request)
-       {
-        Mail::to($request->email)->send(new ThankYou($email));
-        return response()->json('hello', 200);
-       }
+    $contactus = new contactus();
+
+    $contactus->name=$request->Name;
+    $contactus->email=$request->Email;
+    $contactus->phone=$request->Phone;
+    $contactus->subject=$request->Subject;
+    $contactus->content=$request->Content;
+
+
+
+    $contactus->save();
+
+    $email= $request->Email;
+    $name=$request->Name;
+
+    // Mail::to($email)->cc($schoolEmail)->send(new ThankYou($name));
+
+    Mail::to($schoolEmail)->send(new ContactUsMail(
+        $name,
+        $contactus->email,
+        $contactus->phone,
+        $contactus->subject,
+        $contactus->content
+    ));
+
+    Mail::to($email)->send(new ContactUsApplierMail($name));
+    return response()->json($contactus, 200);
+    }
+
+
+    public function mailform(Request $request)
+    {
+    $name2= 'sithuhein26@gmail.com';
+
+    return view('contactusmail',compact('name2'));
+    }
+
+    public function sendemail(Request $request)
+    {
+    Mail::to($request->email)->send(new ThankYou($email));
+    return response()->json('hello', 200);
+    }
 
 }

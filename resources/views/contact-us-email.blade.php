@@ -9,7 +9,7 @@
 
         <p style="font-size:16px;">Thank you for reaching out to us. We have received your contact request, and one of our team members will be in touch shortly. Below are the details of your submission:</p>
 
-        <table style="width:100%; border-collapse:collapse; margin-top:20px;">
+        <table style="width:100%; border-collapse:collapse; margin-top:20px;margin-bottom:20px;">
             <tr>
                 <th style="text-align:left; padding:8px; background:#f4f4f4;">Field</th>
                 <th style="text-align:left; padding:8px; background:#f4f4f4;">Details</th>
@@ -36,13 +36,8 @@
             </tr>
         </table>
 
-        <p style="margin-top:20px; font-size:16px;">If you have any additional questions or would like to follow up on your inquiry, please feel free to reach out to us at any time.</p>
-
-        <p style="font-size:16px; font-weight:bold;">Phone: <a href="tel:+959428377766" style="font-weight:normal;">09-428377766</a>, <a href="tel:+959252447066" style="font-weight:normal;">09-252 447066</a></p>
-
-        <p style="margin-top:30px; font-size:18px; text-align:center;">
-            <b>Best regards,</b><br>
-            <span style="color:darkblue;">Shwe Maw Kun Private School Team</span>
+        <p style="font-size:16px; text-align:center;">
+            <a href="https://smkedugroup.com/admin/contact-us-view" style="background-color:#4CAF50; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;">View Application Details</a>
         </p>
 
         <img src="{{asset('img/cover.jpg')}}" style="width:100%; margin-top:10px; border-radius:5px;" alt="Shwe Maw Kun Cover">

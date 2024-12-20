@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\AppointmentApplierMail;
+use App\Mail\AppointmentMail;
 use App\Mail\ThankYou;
 use App\Models\Course;
 use App\Models\DaySlot;
@@ -74,8 +75,6 @@ class AppointmentController extends Controller
         return response()->json($appointments);
     }
 
-
-
     /**
      * Store a newly created resource in storage.
      *
@@ -92,7 +91,7 @@ class AppointmentController extends Controller
             'booking_date' => 'required|date',
             'booking_slot_id' => 'required|integer',
             'courses' => 'required|array',
-            'courses.*' => 'exists:courses,id', // Ensure course IDs exist
+            'courses.*' => 'exists:courses,id',
         ]);
 
         // Check if the booking slot is already taken
@@ -114,15 +113,18 @@ class AppointmentController extends Controller
         // Create the appointment
         $appointment = Appointment::create($appointmentData);
         $email= $request->email;
-        // $schoolEmail = "info@smkeducationgroup.com";
-        $schoolEmail = "linuxcleaner15@gmail.com";
+        $schoolEmail = "info@smkeducationgroup.com";
         $name=$request->parent_name;
         $booking_date = $request->booking_date;
-        $booking_slot = BookingSlot::find($request->booking_slot_id); // Assuming you have a `BookingSlot` model
-        // $courses = Course::whereIn('id', $request->courses)->pluck('name'); // Fetch course names
-        Mail::to($email)->send(new AppointmentApplierMail($name, $booking_date, $booking_slot->name));
+        $booking_slot = BookingSlot::find($request->booking_slot_id);
+        if($booking_slot->day_type === '0'){
+            $dayType = "WeekDays";
+        }else{
+            $dayType = "WeekEnds";
+        }
+        Mail::to($email)->send(new AppointmentApplierMail($name));
+        Mail::to($schoolEmail)->send(new AppointmentMail($name,$appointment->parent_name,$appointment->student_name,$appointment->email,$appointment->phone,$appointment->booking_date,$dayType,$booking_slot->start_time,$booking_slot->end_time));
 
-        Mail::to($schoolEmail)->send(new ThankYou($name));
         $daySlot = DaySlot::create([
             'appointment_id' => $appointment->id,
             'booking_slot_id' => $request->booking_slot_id,
@@ -139,7 +141,6 @@ class AppointmentController extends Controller
             'daySlot' => $daySlot
         ], 201);
     }
-
 
     /**
      * Display the specified resource.
@@ -191,9 +192,6 @@ class AppointmentController extends Controller
         return response()->json($appointment->load('courses'));
     }
 
-
-
-
     /**
      * Remove the specified resource from storage.
      *
@@ -216,32 +214,32 @@ class AppointmentController extends Controller
         return response()->json(['message' => 'Appointment deleted successfully']);
     }
 
-
     public function appointmentConfirmed($id)
     {
         // Find the appointment by ID
         $appointment = Appointment::findOrFail($id);
-        // Proceed to confirm the appointment
         $appointment->status = '1'; // Set status as '1' (confirmed)
         $appointment->save();
-
         $email= $appointment->email;
-        $schoolEmail = "shwemawkunschool@gmail.com";
         $name=$appointment->parent_name;
-        Mail::to($email)->cc($schoolEmail)->send(new ConfirmedAppointment($name));
-        // Check if the appointment is already confirmed (status '1')
+        $appointmentDate = $appointment->booking_date;
+        $booking_slot = BookingSlot::find($appointment->booking_slot_id);
+        if($booking_slot->day_type === '0'){
+            $dayType = "WeekDays";
+        }else{
+            $dayType = "WeekEnds";
+        }
+        Mail::to($email)->send(new ConfirmedAppointment($name,$appointmentDate,$dayType,$booking_slot->start_time,$booking_slot->end_time));
         if ($appointment->daySlot->status === '1') {
-            return response()->json(['message' => 'This appointment has already been confirmed.'], 400); // Return a 400 status code with a message
+            return response()->json(['message' => 'This appointment has already been confirmed.'], 400);
         }
         // Check if the appointment has a daySlot and confirm it as well
         if ($appointment->daySlot) {
-            $appointment->daySlot->status = '1'; // Set daySlot status as '1' (confirmed)
-            $appointment->daySlot->save(); // Save the daySlot
+            $appointment->daySlot->status = '1';
+            $appointment->daySlot->save();
         }
-
         return response()->json(['message' => 'Appointment confirmed successfully']);
     }
-
 
     public function appointmentCanceled($id)
     {
@@ -250,9 +248,8 @@ class AppointmentController extends Controller
         $appointment->save();
 
         $email= $appointment->email;
-        $schoolEmail = "shwemawkunschool@gmail.com";
         $name=$appointment->parent_name;
-        Mail::to($email)->cc($schoolEmail)->send(new CanceledAppointment($name));
+        Mail::to($email)->send(new CanceledAppointment($name));
 
         if ($appointment->daySlot) {
             $appointment->daySlot->status = '2'; // Set daySlot status as '2' (string)

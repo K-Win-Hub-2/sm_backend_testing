@@ -7,13 +7,7 @@
     <div class="content" style="border:1px solid #ddd; border-radius:10px; padding:20px; box-shadow: 0px 0px 11px rgba(0,0,0,0.1); background-color:#f9f9f9;">
         <h3 style="font-size:20px; color:#444; margin-bottom:10px;">Dear <b style="color:darkblue; text-shadow: 0px 0px 4px #F3cd5d;">{{$name}}</b>,</h3>
 
-        <p style="font-size:16px; line-height:1.6;">Thank you for scheduling an appointment with Shwe Maw Kun Private School! We have received your appointment request, and one of our team members will be in touch with you shortly. Below are the details of your appointment:</p>
-
-        {{-- <div style="margin-top:20px;">
-            <p style="font-size:16px; margin:5px 0;"><strong>Appointment Date:</strong> {{$booking_date}}</p>
-            <p style="font-size:16px; margin:5px 0;"><strong>Appointment Time:</strong> {{$appointment_time}}</p>
-            <p style="font-size:16px; margin:5px 0;"><strong>Purpose of Appointment:</strong> {{$appointment_purpose}}</p>
-        </div> --}}
+        <p style="font-size:16px; line-height:1.6;">Thank you for scheduling an appointment with Shwe Maw Kun Private School! We have received your appointment request, and one of our team members will be in touch with you shortly.</p>
 
         <p style="font-size:16px; margin-top:20px;">If you need to reschedule or have any additional questions, feel free to reach out to us at any time. We're here to assist you!</p>
 

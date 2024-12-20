@@ -5,19 +5,22 @@
     </div>
 
     <div class="content" style="border:1px solid #ddd; border-radius:10px; padding:20px; box-shadow: 0px 0px 11px rgba(0,0,0,0.1);">
-        <h3 style="font-size:20px; color:#444;">Dear <b style="color:darkblue; text-shadow: 0px 0px 4px #F3cd5d;">{{$name2}}</b>,</h3>
+        <p style="font-size:16px;">We have scheduled an appointment with the following details:</p>
 
-        <p style="font-size:16px;">Thank you for reaching out to us. We have received your contact request, and one of our team members will be in touch shortly. Below are the details of your submission:</p>
+        <ul style="font-size:16px; line-height:1.8;">
+            <li><b>Parent's Name:</b> {{ $parent_name }}</li>
+            <li><b>Student's Name:</b> {{ $student_name }}</li>
+            <li><b>Email:</b> {{ $email }}</li>
+            <li><b>Phone:</b> {{ $phone }}</li>
+            <li><b>Booking Date:</b> {{ $booking_date }}</li>
+            <li><b>Day Type:</b> {{ $dayType }}</li>
+            <li><b>Time Slot:</b> {{ $start_time }} - {{ $end_time }}</li>
+        </ul>
 
-        <p style="margin-top:20px; font-size:16px;">If you have any additional questions or would like to follow up on your inquiry, please feel free to reach out to us at any time.</p>
-
-        <p style="font-size:16px; font-weight:bold;">Phone: <a href="tel:+959428377766" style="font-weight:normal;">09-428377766</a>, <a href="tel:+959252447066" style="font-weight:normal;">09-252 447066</a></p>
-
-        <p style="margin-top:30px; font-size:18px; text-align:center;">
-            <b>Best regards,</b><br>
-            <span style="color:darkblue;">Shwe Maw Kun Private School Team</span>
+        <p style="font-size:16px; text-align:center;">
+            <a href="https://smkedugroup.com/admin/appoinment-enquiry-list" style="background-color:#4CAF50; color:white; padding:10px 20px; text-decoration:none; border-radius:5px;">View Application Details</a>
         </p>
 
-        <img src="{{asset('img/cover.jpg')}}" style="width:100%; margin-top:10px; border-radius:5px;" alt="Shwe Maw Kun Cover">
+        <img src="{{ asset('img/cover.jpg') }}" style="width:100%; margin-top:10px; border-radius:5px;" alt="Shwe Maw Kun Cover">
     </div>
 </div>
