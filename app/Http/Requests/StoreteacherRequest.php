@@ -24,7 +24,15 @@ class StoreteacherRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'teacher_category_id' => 'required|integer',
+            'name' => 'required|string|max:255',
+            'studied' => 'required|string|max:255',
+            'position' => 'required|string|max:255',
+            'isdisplay' => 'required|boolean',
+            'message' => 'nullable|string',
+            'credential' => 'nullable|string',
+            'teacher_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'credential_photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Add validation for multiple photos
         ];
     }
 }

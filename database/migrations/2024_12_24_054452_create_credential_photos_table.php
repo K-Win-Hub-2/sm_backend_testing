@@ -13,17 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('teachers', function (Blueprint $table) {
+        Schema::create('credential_photos', function (Blueprint $table) {
             $table->id();
-            $table->integer('type');
-            $table->string('name');
-            $table->string('studied');
-            $table->string('position');
-            $table->text('biography');
-            $table->text('about');
-            $table->string('isDisplay');
-            $table->LongText('teacherimage');
-            $table->string('sort_by');
+            $table->string('photo_path');
             $table->timestamps();
         });
     }
@@ -35,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('teachers');
+        Schema::dropIfExists('credential_photos');
     }
 };

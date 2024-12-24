@@ -122,8 +122,12 @@ class TeacherCategoryController extends Controller
       //  $teacher->update();
        // return response()->json($teacher, 200);
    // }
-   public function teacherCategory(){
-    $teacher_categories = TeacherCategory::with('teachers')->get();
-    return response()->json($teacher_categories, 200);
+   public function teacherCategory()
+   {
+       $teacher_categories = TeacherCategory::with(['teachers' => function($query) {
+           $query->orderByRaw('CAST(sort_by AS UNSIGNED) asc');
+       }])->get();
+
+       return response()->json($teacher_categories, 200);
    }
 }

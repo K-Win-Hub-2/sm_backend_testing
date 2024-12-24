@@ -70,6 +70,9 @@ Route::apiResource('courses', CourseController::class);
 Route::apiResource('teacher', TeacherController::class);
 Route::post('teacher-update/{id}',[TeacherController::class,'update']);
 Route::delete('teacher-delete/{id}',[TeacherController::class,'destroy']);
+Route::post('teacher-sorty-by/{id}',[TeacherController::class]);
+
+Route::post('update-sorting', [TeacherController::class, 'updateSorting']);
 
 Route::post('isDisplay/{id}',[TeacherController::class,'isDisplay']);
 
