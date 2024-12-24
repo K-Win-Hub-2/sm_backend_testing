@@ -76,8 +76,6 @@ class TeacherController extends Controller
      */
     public function store(StoreteacherRequest $request)
     {
-        Log::info($request->all());
-
         if ($request->hasfile('teacher_photo')) {
             $image = $request->file('teacher_photo');
             $trimmedName = str_replace(' ', '', trim($request->name));
@@ -86,8 +84,6 @@ class TeacherController extends Controller
         } else {
             $teacher_photo_path = "defaultteacher.JPG";
         }
-
-        // Retrieve the maximum value of the sort_by column and increment it by 1
         $maxSortBy = Teacher::max('sort_by');
         $newSortBy = $maxSortBy ? $maxSortBy + 1 : 1;
 
@@ -102,37 +98,19 @@ class TeacherController extends Controller
         $teacher->teacher_photo_path = $teacher_photo_path;
         $teacher->sort_by = $newSortBy;
         $teacher->save();
-
-        Log::info('Teacher saved with ID: ' . $teacher->id);
-
-        // Handle multiple credential_photos
         $credentialPhotos = $request->file('credential_photos');
-
-        // Check if credential_photos is an array and has length greater than 0
         if (is_array($credentialPhotos) && count($credentialPhotos) > 0) {
-            Log::info('credential_photos field is recognized as a file upload.');
-            Log::info('Number of credential photos: ' . count($credentialPhotos));
-
             foreach ($credentialPhotos as $photo) {
                 $photoName = $trimmedName . "_" . str_replace(' ', '_', $request->credential) . "_" . uniqid() . "." . $photo->extension();
                 $photo->move(public_path() . '/schooldata/credentialPhotos/', $photoName);
-
-                Log::info('Teacher ID: ' . $teacher->id);
-                Log::info('Photo Name: ' . $photoName);
-
                 $photoModel = new CredentialPhoto();
                 $photoModel->photo_path = $photoName;
                 $photoModel->save();
-
-                Log::info('Photo Model saved with ID: ' . $photoModel->id);
-
-                // Attach the photo to the teacher
                 $teacher->credentialPhotos()->attach($photoModel->id);
             }
         } else {
             Log::info('No credential photos found in the request.');
         }
-
         return response()->json($teacher->load('credentialPhotos'), 200);
     }
 
@@ -182,30 +160,23 @@ class TeacherController extends Controller
             $teacher_photo_path = $trimmedName . "." . $image->extension();
             $image->move(public_path() . "/schooldata/teacherphoto/", $teacher_photo_path);
         }
-
         $teacher->teacher_category_id = $request->teacher_category_id;
         $teacher->name = $request->name;
         $teacher->studied = $request->studied;
         $teacher->position = $request->position;
         $teacher->message = $request->message;
         $teacher->isDisplay = $request->isdisplay;
-        $teacher->credential = $request->credential; // Update credential field
+        $teacher->credential = $request->credential;
         $teacher->teacher_photo_path = $teacher_photo_path;
 
         $teacher->save();
-
-        // Handle multiple credential_photos
         if ($request->hasfile('credential_photos')) {
             $credentialPhotos = $request->file('credential_photos');
-
-            // Ensure $credentialPhotos is an array
             if (!is_array($credentialPhotos)) {
                 $credentialPhotos = [$credentialPhotos];
             }
 
-            // Delete existing credential photos if new ones are uploaded
             $teacher->credentialPhotos()->detach();
-
             foreach ($credentialPhotos as $photo) {
                 $photoName = $trimmedName . "_" . str_replace(' ', '_', $request->credential) . "_" . uniqid() . "." . $photo->extension();
                 $photo->move(public_path() . '/schooldata/credentialPhotos/', $photoName);
@@ -213,8 +184,6 @@ class TeacherController extends Controller
                 $photoModel = new CredentialPhoto();
                 $photoModel->photo_path = $photoName;
                 $photoModel->save();
-
-                // Attach the photo to the teacher
                 $teacher->credentialPhotos()->attach($photoModel->id);
             }
         }
