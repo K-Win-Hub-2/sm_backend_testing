@@ -114,18 +114,11 @@ class TeacherCategoryController extends Controller
             "teacher_category" => $teacher_category,
         ]);
     }
-
-   // public function isDisplay($id,Request $request)
-   // {
-    //    $teacher = teacher::find($id);
-      //  $teacher->isDisplay=$request->isDisplay;
-      //  $teacher->update();
-       // return response()->json($teacher, 200);
-   // }
    public function teacherCategory()
    {
        $teacher_categories = TeacherCategory::with(['teachers' => function($query) {
-           $query->orderByRaw('CAST(sort_by AS UNSIGNED) asc');
+           $query->orderByRaw('CAST(sort_by AS UNSIGNED) asc')
+                 ->with('credentialPhotos'); // Eager load credentialPhotos
        }])->get();
 
        return response()->json($teacher_categories, 200);
