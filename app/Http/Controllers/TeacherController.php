@@ -76,6 +76,7 @@ class TeacherController extends Controller
      */
     public function store(StoreteacherRequest $request)
     {
+        Log::info($request->all());
         if ($request->hasfile('teacher_photo')) {
             $image = $request->file('teacher_photo');
             $trimmedName = str_replace(' ', '', trim($request->name));
@@ -100,7 +101,7 @@ class TeacherController extends Controller
         $teacher->save();
 
         // Handle multiple credential_photos
-        if ($request->hasfile('credential_photos')) {
+        // if ($request->hasfile('credential_photos')) {
             $credentialPhotos = $request->file('credential_photos');
 
             // Ensure $credentialPhotos is an array
@@ -116,9 +117,9 @@ class TeacherController extends Controller
                 $photoModel->save();
                 $teacher->credentialPhotos()->attach($photoModel->id);
             }
-        } else {
-            Log::info('No credential photos found in the request.');
-        }
+        // } else {
+        //     Log::info('No credential photos found in the request.');
+        // }
         return response()->json($teacher->load('credentialPhotos'), 200);
     }
 
