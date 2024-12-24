@@ -74,35 +74,6 @@ class TeacherController extends Controller
      * @param  \App\Http\Requests\StoreteacherRequest  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(StoreteacherRequest $request)
-    // {
-	// if($request->hasfile('teacher_photo')){
-	// 	$image = $request->file('teacher_photo');
-    //     $trimmedName = str_replace(' ', '', trim($request->name));
-    //     $teacher_photo_path  = $trimmedName. "." .$image->extension();
-	// 	$image->move(public_path(). '/schooldata/teacherphoto/',$teacher_photo_path);
-	// }else{
-	// 	$teacher_photo_path = "defaultteacher.JPG";
-	// }
-
-    //     // Retrieve the maximum value of the sort_by column and increment it by 1
-    //     $maxSortBy = Teacher::max('sort_by');
-    //     $newSortBy = $maxSortBy ? $maxSortBy + 1 : 1;
-
-    //     $teacher = new teacher();
-    //     $teacher->teacher_category_id=$request->teacher_category_id;
-    //     $teacher->name=$request->name;
-    //     $teacher->studied=$request->studied;
-    //     $teacher->position=$request->position;
-    //    // $teacher->biography=$request->biography;
-    //     $teacher->isDisplay=$request->isdisplay;
-    //     $teacher->message=$request->message;
-    //     $teacher->teacher_photo_path=$teacher_photo_path;
-    //     $teacher->sort_by = $newSortBy; // Set the new sort_by value
-
-    //     $teacher->save();
-    //     return response()->json($teacher, 200);
-    // }
     public function store(StoreteacherRequest $request)
     {
         if ($request->hasfile('teacher_photo')) {
@@ -157,9 +128,15 @@ class TeacherController extends Controller
      * @param  \App\Models\teacher  $teacher
      * @return \Illuminate\Http\Response
      */
-    public function show(teacher $teacher)
+    public function show(Teacher $teacher)
     {
-        //
+        // Eager load the related models
+        $teacher->load(['teacher_category', 'credentialPhotos']);
+
+        return response()->json([
+            "status" => "success",
+            "teacher" => $teacher
+        ]);
     }
 
     /**
