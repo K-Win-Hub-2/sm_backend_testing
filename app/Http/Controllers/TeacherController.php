@@ -18,10 +18,27 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $teacher = teacher::with('teacher_category','credentials')
+        $teachers = Teacher::with('teacher_category', 'credentials')
                     ->orderByRaw('CAST(sort_by AS UNSIGNED) asc')
                     ->get();
-        return response()->json($teacher, 200);
+
+        foreach ($teachers as $teacher) {
+            if ($teacher->credentials) {
+                foreach ($teacher->credentials as $credentialPhoto) {
+                    $path = public_path($credentialPhoto->photo_path);
+
+                    if (file_exists($path)) {
+                        $type = pathinfo($path, PATHINFO_EXTENSION);
+                        $data = file_get_contents($path);
+                        $base64 = 'data:' . mime_content_type($path) . ';base64,' . base64_encode($data);
+                        $credentialPhoto->photo_path = $base64;
+                    } else {
+                        $credentialPhoto->photo_path = null;
+                    }
+                }
+            }
+        }
+        return response()->json(['teacher' => $teachers], 200);
     }
 
     public function updateSorting(Request $request)
@@ -76,6 +93,7 @@ class TeacherController extends Controller
      */
     public function store(StoreteacherRequest $request)
     {
+        Log::info($request->all());
         if ($request->hasFile('teacher_photo')) {
             $image = $request->file('teacher_photo');
             $trimmedName = str_replace(' ', '', trim($request->name));
@@ -175,7 +193,6 @@ class TeacherController extends Controller
         $teacher->position = $request->position;
         $teacher->message = $request->message;
         $teacher->isDisplay = $request->isdisplay;
-        $teacher->credential = $request->credential;
         $teacher->teacher_photo_path = $teacher_photo_path;
         $teacher->save();
         if ($request->has('credentials') && is_array($credentials = json_decode($request->input('credentials', '[]'), true))) {
