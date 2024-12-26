@@ -118,7 +118,7 @@ class TeacherCategoryController extends Controller
    {
        $teacher_categories = TeacherCategory::with(['teachers' => function($query) {
            $query->orderByRaw('CAST(sort_by AS UNSIGNED) asc')
-                 ->with('credentialPhotos'); // Eager load credentialPhotos
+                 ->with('credentials'); // Eager load credentials
        }])->get();
 
        return response()->json($teacher_categories, 200);

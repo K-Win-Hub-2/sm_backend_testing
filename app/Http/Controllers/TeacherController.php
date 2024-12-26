@@ -18,7 +18,7 @@ class TeacherController extends Controller
      */
     public function index()
     {
-        $teacher = teacher::with('teacher_category','credentialPhotos')
+        $teacher = teacher::with('teacher_category','credentials')
                     ->orderByRaw('CAST(sort_by AS UNSIGNED) asc')
                     ->get();
         return response()->json($teacher, 200);
@@ -133,7 +133,7 @@ class TeacherController extends Controller
     public function show(Teacher $teacher)
     {
         // Eager load the related models
-        $teacher->load(['teacher_category', 'credentialPhotos']);
+        $teacher->load(['teacher_category', 'credentials']);
 
         return response()->json([
             "status" => "success",
