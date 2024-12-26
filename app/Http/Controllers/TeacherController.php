@@ -66,7 +66,7 @@ class TeacherController extends Controller
             return response()->json($data, 200);
         }
 
-     }
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -76,17 +76,16 @@ class TeacherController extends Controller
      */
     public function store(StoreteacherRequest $request)
     {
-        if ($request->hasfile('teacher_photo')) {
+        if ($request->hasFile('teacher_photo')) {
             $image = $request->file('teacher_photo');
             $trimmedName = str_replace(' ', '', trim($request->name));
             $teacher_photo_path = $trimmedName . "." . $image->extension();
-            $image->move(public_path() . '/schooldata/teacherphoto/', $teacher_photo_path);
+            $image->move(public_path('schooldata/teacherphoto'), $teacher_photo_path);
         } else {
             $teacher_photo_path = "defaultteacher.JPG";
         }
         $maxSortBy = Teacher::max('sort_by');
         $newSortBy = $maxSortBy ? $maxSortBy + 1 : 1;
-
         $teacher = new Teacher();
         $teacher->teacher_category_id = $request->teacher_category_id;
         $teacher->name = $request->name;
@@ -94,25 +93,36 @@ class TeacherController extends Controller
         $teacher->position = $request->position;
         $teacher->isDisplay = $request->isdisplay;
         $teacher->message = $request->message;
-        $teacher->credential = $request->credential;
         $teacher->teacher_photo_path = $teacher_photo_path;
         $teacher->sort_by = $newSortBy;
         $teacher->save();
-        $credentialPhotos = $request->file('credential_photos');
-        if (is_array($credentialPhotos) && count($credentialPhotos) > 0) {
-            foreach ($credentialPhotos as $photo) {
-                $photoName = $trimmedName . "_" . str_replace(' ', '_', $request->credential) . "_" . uniqid() . "." . $photo->extension();
-                $photo->move(public_path() . '/schooldata/credentialPhotos/', $photoName);
-                $photoModel = new CredentialPhoto();
-                $photoModel->photo_path = $photoName;
-                $photoModel->save();
-                $teacher->credentialPhotos()->attach($photoModel->id);
+        $credentials = json_decode($request->input('credentials', '[]'), true);
+        if (is_array($credentials)) {
+            foreach ($credentials as $credential) {
+                if (isset($credential['photo']) && $credential['photo']) {
+                    $trimmedName = preg_replace('/[^a-zA-Z0-9_-]/', '_', trim($teacher->name . "_" . $credential['name']));
+                    $photoPath = $this->saveBase64Image($credential['photo'], $trimmedName, 'schooldata/credentialPhotos');
+                    $photoModel = new CredentialPhoto();
+                    $photoModel->name = $credential['name'];
+                    $photoModel->photo_path = $photoPath;
+                    $photoModel->save();
+                    $teacher->credentials()->attach($photoModel->id);
+                }
             }
         } else {
-            Log::info('No credential photos found in the request.');
+            Log::error('Invalid credentials format: Expected array but got something else.');
         }
-        return response()->json($teacher->load('credentialPhotos'), 200);
+        return response()->json($teacher->load('credentials'), 200);
     }
+
+    /**
+     * Decode a base64 image and save it to the specified directory.
+     *
+     * @param string $base64Image
+     * @param string $namePrefix
+     * @param string $directory
+     * @return string Path to the saved image
+     */
 
     /**
      * Display the specified resource.
@@ -152,8 +162,7 @@ class TeacherController extends Controller
     public function update(UpdateteacherRequest $request, $id)
     {
         $teacher = Teacher::findOrFail($id);
-        $teacher_photo_path = $teacher->teacher_photo_path; // Retain the existing path if no new file is uploaded
-
+        $teacher_photo_path = $teacher->teacher_photo_path;
         if ($request->hasfile('teacher_photo')) {
             $image = $request->file('teacher_photo');
             $trimmedName = str_replace(' ', '', trim($request->name));
@@ -168,27 +177,27 @@ class TeacherController extends Controller
         $teacher->isDisplay = $request->isdisplay;
         $teacher->credential = $request->credential;
         $teacher->teacher_photo_path = $teacher_photo_path;
-
         $teacher->save();
-        if ($request->hasfile('credential_photos')) {
-            $credentialPhotos = $request->file('credential_photos');
-            if (!is_array($credentialPhotos)) {
-                $credentialPhotos = [$credentialPhotos];
-            }
+        if ($request->has('credentials') && is_array($credentials = json_decode($request->input('credentials', '[]'), true))) {
+            $teacher->credentials()->detach();
+            foreach ($credentials as $credential) {
+                if (isset($credential['photo']) && $credential['photo']) {
+                    $trimmedName = preg_replace('/[^a-zA-Z0-9_-]/', '_', trim($teacher->name . "_" . $credential['name']));
+                    if (strpos($credential['photo'], 'data:image/') === 0) {
+                        $photoPath = $this->saveBase64Image($credential['photo'], $trimmedName, 'schooldata/credentialPhotos');
+                    } else {
+                        $photoPath = $this->saveCredentialPhoto($credential['photo'], $trimmedName);
+                    }
+                    $photoModel = new CredentialPhoto();
+                    $photoModel->name = $credential['name'];
+                    $photoModel->photo_path = $photoPath;
+                    $photoModel->save();
 
-            $teacher->credentialPhotos()->detach();
-            foreach ($credentialPhotos as $photo) {
-                $photoName = $trimmedName . "_" . str_replace(' ', '_', $request->credential) . "_" . uniqid() . "." . $photo->extension();
-                $photo->move(public_path() . '/schooldata/credentialPhotos/', $photoName);
-
-                $photoModel = new CredentialPhoto();
-                $photoModel->photo_path = $photoName;
-                $photoModel->save();
-                $teacher->credentialPhotos()->attach($photoModel->id);
+                    $teacher->credentials()->attach($photoModel->id);
+                }
             }
         }
-
-        return response()->json($teacher->load('credentialPhotos'), 200);
+        return response()->json($teacher->load('credentials'), 200);
     }
 
     /**
@@ -213,5 +222,30 @@ class TeacherController extends Controller
         $teacher->isDisplay=$request->isDisplay;
         $teacher->update();
         return response()->json($teacher, 200);
+    }
+
+    private function saveBase64Image($base64Image, $namePrefix, $directory)
+    {
+        if (!preg_match('/^data:image\/(\w+);base64,/', $base64Image, $type)) {
+            throw new \Exception("Invalid base64 image format");
+        }
+        $imageType = $type[1];
+        $base64Image = preg_replace('/^data:image\/\w+;base64,/', '', $base64Image);
+        $decodedImage = base64_decode($base64Image);
+        if ($decodedImage === false) {
+            throw new \Exception("Failed to decode base64 image");
+        }
+        $filename = $namePrefix . "_" . uniqid() . "." . $imageType;
+        $savePath = public_path($directory);
+        if (!file_exists($savePath)) {
+            if (!mkdir($savePath, 0755, true) && !is_dir($savePath)) {
+                throw new \Exception("Failed to create directory: $savePath");
+            }
+        }
+        $fullPath = $savePath . '/' . $filename;
+        if (file_put_contents($fullPath, $decodedImage) === false) {
+            throw new \Exception("Failed to save the image to: $fullPath");
+        }
+        return $directory . '/' . $filename;
     }
 }

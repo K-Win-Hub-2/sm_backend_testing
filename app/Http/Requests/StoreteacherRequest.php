@@ -30,9 +30,10 @@ class StoreteacherRequest extends FormRequest
             'position' => 'required|string|max:255',
             'isdisplay' => 'required|boolean',
             'message' => 'nullable|string',
-            'credential' => 'nullable|string',
             'teacher_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'credential_photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Add validation for multiple photos
+            // 'credentials' => 'nullable|array',
+            // 'credentials.*.name' => 'required|string|max:255',
+            // 'credentials.*.photo' => ['nullable', 'string', 'regex:/^data:image\/(jpeg|png|jpg|gif|svg);base64,/']
         ];
     }
 }

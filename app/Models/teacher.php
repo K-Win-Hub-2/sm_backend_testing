@@ -14,7 +14,7 @@ class teacher extends Model
     {
         return $this->belongsTo(TeacherCategory::class);
     }
-    public function credentialPhotos()
+    public function credentials()
     {
         return $this->belongsToMany(CredentialPhoto::class, 'teacher_credential_photos');
     }
