@@ -179,7 +179,13 @@ class TeacherController extends Controller
         $teacher->teacher_photo_path = $teacher_photo_path;
         $teacher->save();
         if ($request->has('credentials') && is_array($credentials = json_decode($request->input('credentials', '[]'), true))) {
-            $teacher->credentials()->detach();
+            $teacher->credentials()->each(function ($credentialPhoto) {
+                $filePath = public_path($credentialPhoto->photo_path);
+                if (file_exists($filePath)) {
+                    unlink($filePath);
+                }
+                $credentialPhoto->delete();
+            });
             foreach ($credentials as $credential) {
                 if (isset($credential['photo']) && $credential['photo']) {
                     $trimmedName = preg_replace('/[^a-zA-Z0-9_-]/', '_', trim($teacher->name . "_" . $credential['name']));
