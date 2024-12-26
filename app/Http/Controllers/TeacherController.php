@@ -21,14 +21,11 @@ class TeacherController extends Controller
         $teachers = Teacher::with('teacher_category', 'credentials')
                     ->orderByRaw('CAST(sort_by AS UNSIGNED) asc')
                     ->get();
-
         foreach ($teachers as $teacher) {
             if ($teacher->credentials) {
                 foreach ($teacher->credentials as $credentialPhoto) {
                     $path = public_path($credentialPhoto->photo_path);
-
                     if (file_exists($path)) {
-                        $type = pathinfo($path, PATHINFO_EXTENSION);
                         $data = file_get_contents($path);
                         $base64 = 'data:' . mime_content_type($path) . ';base64,' . base64_encode($data);
                         $credentialPhoto->photo_path = $base64;
@@ -148,11 +145,21 @@ class TeacherController extends Controller
      * @param  \App\Models\teacher  $teacher
      * @return \Illuminate\Http\Response
      */
-    public function show(Teacher $teacher)
+    public function show(teacher $teacher)
     {
-        // Eager load the related models
         $teacher->load(['teacher_category', 'credentials']);
-
+        if ($teacher->credentials) {
+            foreach ($teacher->credentials as $credentialPhoto) {
+                $path = public_path($credentialPhoto->photo_path);
+                if (file_exists($path)) {
+                    $data = file_get_contents($path);
+                    $base64 = 'data:' . mime_content_type($path) . ';base64,' . base64_encode($data);
+                    $credentialPhoto->photo_path = $base64;
+                } else {
+                    $credentialPhoto->photo_path = null;
+                }
+            }
+        }
         return response()->json([
             "status" => "success",
             "teacher" => $teacher

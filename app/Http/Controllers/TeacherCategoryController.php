@@ -114,13 +114,29 @@ class TeacherCategoryController extends Controller
             "teacher_category" => $teacher_category,
         ]);
     }
-   public function teacherCategory()
-   {
-       $teacher_categories = TeacherCategory::with(['teachers' => function($query) {
-           $query->orderByRaw('CAST(sort_by AS UNSIGNED) asc')
-                 ->with('credentials'); // Eager load credentials
-       }])->get();
 
-       return response()->json($teacher_categories, 200);
-   }
+    public function teacherCategory()
+    {
+        $teacher_categories = TeacherCategory::with(['teachers' => function($query) {
+            $query->orderByRaw('CAST(sort_by AS UNSIGNED) asc')
+                  ->with('credentials');
+        }])->get();
+        foreach ($teacher_categories as $category) {
+            foreach ($category->teachers as $teacher) {
+                if ($teacher->credentials) {
+                    foreach ($teacher->credentials as $credentialPhoto) {
+                        $path = public_path($credentialPhoto->photo_path);
+                        if (file_exists($path)) {
+                            $data = file_get_contents($path);
+                            $base64 = 'data:' . mime_content_type($path) . ';base64,' . base64_encode($data);
+                            $credentialPhoto->photo_path = $base64;
+                        } else {
+                            $credentialPhoto->photo_path = null;
+                        }
+                    }
+                }
+            }
+        }
+        return response()->json($teacher_categories, 200);
+    }
 }
