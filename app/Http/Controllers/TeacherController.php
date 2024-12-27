@@ -35,7 +35,7 @@ class TeacherController extends Controller
                 }
             }
         }
-        return response()->json(['teacher' => $teachers], 200);
+        return response()->json(['data' => $teachers], 200);
     }
 
     public function updateSorting(Request $request)
