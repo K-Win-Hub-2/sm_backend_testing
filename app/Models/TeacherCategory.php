@@ -13,4 +13,8 @@ class TeacherCategory extends Model
     public function teachers(){
         return $this->hasMany(teacher::class);
     }
+
+    public function igcseTeachers(){
+        return $this->hasMany(IgcseTeacher::class);
+    }
 }

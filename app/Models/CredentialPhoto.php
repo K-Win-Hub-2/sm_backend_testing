@@ -14,4 +14,9 @@ class CredentialPhoto extends Model
     {
         return $this->belongsToMany(teacher::class, 'teacher_credential_photos');
     }
+
+    public function igcseTeachers()
+    {
+        return $this->belongsToMany(IgcseTeacher::class, 'igcse_teacher_credential_photos');
+    }
 }

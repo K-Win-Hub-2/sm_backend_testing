@@ -21,6 +21,7 @@ use App\Http\Controllers\WaitinglistController;
 use App\Http\Controllers\securityauthController;
 use App\Http\Controllers\TeacherCategoryController;
 use App\Http\Controllers\CalendarControllerController;
+use App\Http\Controllers\IgcseTeacherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,20 +67,30 @@ Route::apiResource('waitinglist', WaitinglistController::class);
 Route::post('deleteWaitlist/{id}',[WaitinglistController::class,'deleteWaitlist']);
 
 Route::apiResource('courses', CourseController::class);
+
 // teacher
 Route::apiResource('teacher', TeacherController::class);
 Route::post('teacher-update/{id}',[TeacherController::class,'update']);
 Route::delete('teacher-delete/{id}',[TeacherController::class,'destroy']);
 Route::post('teacher-sorty-by/{id}',[TeacherController::class]);
-
 Route::post('teacher/update-sorting', [TeacherController::class, 'updateSorting']);
-
 Route::post('isDisplay/{id}',[TeacherController::class,'isDisplay']);
+
 
 Route::apiResource('teachercategory',TeacherCategoryController::class);
 Route::put('teacher-category-update/{id}', [TeacherCategoryController::class, 'update']);
 Route::delete('teacher-category-delete/{id}', [TeacherCategoryController::class, 'destroy']);
 Route::get('teacher-category-list', [TeacherCategoryController::class, 'teacherCategory']);
+
+
+// igcse teacher
+Route::apiResource('igcse-teachers', IgcseTeacherController::class);
+Route::post('igcse-teacher-update/{id}',[IgcseTeacherController::class,'update']);
+Route::delete('igcse-teacher-delete/{id}',[IgcseTeacherController::class,'destroy']);
+Route::post('igcse-teacher-sorty-by/{id}',[IgcseTeacherController::class]);
+Route::post('igcse-teacher/update-sorting', [IgcseTeacherController::class, 'updateSorting']);
+Route::post('igcse/isDisplay/{id}',[IgcseTeacherController::class,'isDisplay']);
+Route::post('search-igcse-teacher',[IgcseTeacherController::class,'search']);
 
 
 Route::apiResource('career', CareerController::class);
