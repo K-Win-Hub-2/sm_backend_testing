@@ -27,7 +27,7 @@ class UpdateteacherRequest extends FormRequest
             'teacher_photo' => 'nullable', // Optional, max 2MB
             'teacher_category_id' => 'required|integer|exists:teacher_categories,id', // Must exist in teacher_categories table
             'name' => 'required|string|max:255', // Required and cannot exceed 255 characters
-            'studied' => 'nullable|string|max:255', // Optional, max 255 characters
+            'studied' => 'nullable|string|max:3000', // Optional, max 3000 characters
             'position' => 'nullable|string|max:255', // Optional, max 255 characters
             'message' => 'nullable|string', // Optional, max 1000 characters
             'isdisplay' => 'required|boolean', // Must be a boolean value

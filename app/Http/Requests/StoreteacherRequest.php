@@ -26,7 +26,7 @@ class StoreteacherRequest extends FormRequest
         return [
             'teacher_category_id' => 'required|integer',
             'name' => 'required|string|max:255',
-            'studied' => 'required|string|max:255',
+            'studied' => 'required|string|max:3000',
             'position' => 'required|string|max:255',
             'isdisplay' => 'required|boolean',
             'message' => 'nullable|string',
