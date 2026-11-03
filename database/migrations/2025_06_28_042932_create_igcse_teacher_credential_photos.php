@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('igcse_teacher_credential_photos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('igcse_teacher_id')->constrained()->onDelete('cascade');
-            $table->foreignId('credential_photo_id')->constrained()->onDelete('cascade');
+            $table->foreignId('igcse_teacher_id')->constrained('igcseteachers')->onDelete('cascade');
+            $table->foreignId('credential_photo_id')->constrained('credential_photos')->onDelete('cascade');
+            // $table->foreignId('igcse_teacher_id')->constrained()->onDelete('cascade');
+            // $table->foreignId('credential_photo_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
